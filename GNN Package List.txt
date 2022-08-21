@@ -1,0 +1,16 @@
+PyTorch Geometric (PyG) 
+Deep Graph Library (DGL)
+Graph Nets
+Spektral
+PyTorch
+Tensorflow
+Keras (Built on Tensorflow)
+Sonnet (Built on Tensorflow)
+MXNet
+JAX
+PyTorch Lightning (Built on PyTorch)
+Flax (Built on Jax)
+Scikeras (Built on Keras)
+Skorch (Built on PyTorch)
+Haiku (Built on Jax)
+Jraph
