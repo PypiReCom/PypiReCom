@@ -1,0 +1,5 @@
+Vertex ID,Vertex Type,Development_Status
+FastApi,package,4 - Beta
+PyTorch,package,5 - Production/Stable
+Requests,package,5 - Production/Stable
+TenserFlow,package,5 - Production/Stable

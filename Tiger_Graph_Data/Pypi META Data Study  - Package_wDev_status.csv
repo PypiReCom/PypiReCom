@@ -1,0 +1,5 @@
+package,Development Status
+PyTorch,5 - Production/Stable
+FastApi,4 - Beta
+Requests,5 - Production/Stable
+TenserFlow,5 - Production/Stable

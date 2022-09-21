@@ -1,0 +1,24 @@
+Edge Type,Source Vertex ID,Source Vertex Type,Target Vertex ID,Target Vertex Type
+has_dependeny,FastApi,package,"""mkdocs-material >=8.1.4",Dependency_pkg
+has_dependeny,TenserFlow,package,packaging,Dependency_pkg
+has_dependeny,TenserFlow,package,astunparse (>=1.6.0),Dependency_pkg
+has_dependeny,TenserFlow,package,h5py (>=2.9.0),Dependency_pkg
+has_dependeny,TenserFlow,package,"""tensorboard (<2.11",Dependency_pkg
+has_dependeny,TenserFlow,package,termcolor (>=1.1.0),Dependency_pkg
+has_dependeny,TenserFlow,package,wrapt (>=1.11.0),Dependency_pkg
+has_dependeny,TenserFlow,package,setuptools,Dependency_pkg
+has_dependeny,TenserFlow,package,"""gast (<=0.4.0",Dependency_pkg
+has_dependeny,TenserFlow,package,opt-einsum (>=2.3.2),Dependency_pkg
+has_dependeny,TenserFlow,package,six (>=1.12.0),Dependency_pkg
+has_dependeny,TenserFlow,package,numpy (>=1.20),Dependency_pkg
+has_dependeny,TenserFlow,package,typing-extensions (>=3.6.6),Dependency_pkg
+has_dependeny,TenserFlow,package,tensorflow-io-gcs-filesystem (>=0.23.1),Dependency_pkg
+has_dependeny,TenserFlow,package,keras-preprocessing (>=1.1.1),Dependency_pkg
+has_dependeny,TenserFlow,package,"""protobuf (<3.20",Dependency_pkg
+has_dependeny,TenserFlow,package,libclang (>=13.0.0),Dependency_pkg
+has_dependeny,TenserFlow,package,absl-py (>=1.0.0),Dependency_pkg
+has_dependeny,TenserFlow,package,"""tensorflow-estimator (<2.11",Dependency_pkg
+has_dependeny,TenserFlow,package,google-pasta (>=0.1.1),Dependency_pkg
+has_dependeny,TenserFlow,package,"""""""keras (<2.11",Dependency_pkg
+has_dependeny,TenserFlow,package,"""grpcio (<2.0",Dependency_pkg
+has_dependeny,TenserFlow,package,flatbuffers (>=2.0),Dependency_pkg

@@ -1,0 +1,5 @@
+Edge Type,Source Vertex ID,Source Vertex Type,Target Vertex ID,Target Vertex Type
+has_license,PyTorch,package,BSD License,License
+has_license,Requests,package,Apache Software License,License
+has_license,FastApi,package,MIT License,License
+has_license,TenserFlow,package,Apache Software License,License
