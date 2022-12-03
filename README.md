@@ -1,13 +1,13 @@
 # PypiReCom 
 
 ## Table of Content
-   * [Problem Statement](#problem-Statement)
+   * [Problem Statement](#problem-statement)
    * [Use Case](#use-case)
-   * [How we got the Idea?](#How-we-got-this-Idea?)
+   * [How we got the Idea?](#how-we-got-this-Idea?)
    * [Architecture](#architecture)
-   * [What have we done till now?](#What-have-we-done-till-now?)
-      * [Data Extraction](#Data-Extraction)
-      * [Data Selection & Graph](#Selecting-the-data-and-making-a-Dependecy-Graph)
+   * [What have we done till now?](#what-have-we-done-till-now?)
+      * [Data Extraction](#data-extraction)
+      * [Data Selection & Graph](#selecting-the-data-and-making-a-dependecy-graph)
    * [Result](#result)
 
 ## Problem Statement
