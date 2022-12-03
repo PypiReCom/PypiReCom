@@ -3,9 +3,9 @@
 ## Table of Content
    * [Problem Statement](#problem-statement)
    * [Use Case](#use-case)
-   * [How we got the Idea?](#how-we-got-this-Idea?)
+   * [How we got the Idea?](#how-we-got-this-idea)
    * [Architecture](#architecture)
-   * [What have we done till now?](#what-have-we-done-till-now?)
+   * [What have we done till now?](#what-have-we-done-till-now)
       * [Data Extraction](#data-extraction)
       * [Data Selection & Graph](#selecting-the-data-and-making-a-dependecy-graph)
    * [Result](#result)
