@@ -1,5 +1,26 @@
 # PypiReCom 
 
+## Overview
+
+**Want to build a new capability in Python?**
+   
+   ---> Probably you would visit repositories like Pypi and see what's available
+   
+   ---> Explore git repo(s)
+   * Stack Overflow
+   * Medium
+   * Pypi
+   * Follow experts
+
+   ---> After this Search -> Review & Explore -> ***Decide what's relevant***
+   
+
+   
+**Welcome to PypiReCom**
+   
+   Let's make this all easy.
+
+
 ## Table of Content
    * [Problem Statement](#problem-statement)
    * [Use Case](#use-case)
@@ -161,8 +182,3 @@ Once that is working. Our project has to get the input from the users that what 
 project they want to work on so that, we can do an NLP and get
 the related Search Meta that we think is usefull and give them the output of 
 the possible packages.
-
-
-
-
-
