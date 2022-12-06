@@ -11,6 +11,7 @@
 **Welcome to PypiReCom**
    
    Let's make this all easy.
+   ![Comparison](https://drive.google.com/uc?export=view&id=1PfvsuNlovTTNaaCJMa7QoFmbWWDdeRxT)
 
 
 ## Table of Content
