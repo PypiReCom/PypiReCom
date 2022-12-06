@@ -1,5 +1,5 @@
 <div align="center">
-**PypiReCom**
+  <p style="font-size:300px"><b>PypiReCom</b></p>
 </div>
 
 ## Table of Content
