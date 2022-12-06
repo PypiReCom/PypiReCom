@@ -1,6 +1,7 @@
-<!-- <div align='center'> -->
-# PypiReCom
-     
+<div align="center">
+**PypiReCom**
+</div>
+
 ## Table of Content
    * [1. Overview](#1-overview)
    * [2. Problem Statement](#2-problem-statement)
