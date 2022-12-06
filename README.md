@@ -1,4 +1,4 @@
-<div align='center'.
+<div align='center'>
 # PypiReCom
 
 [![latest commit to dev badge]][latest commit to dev link]
