@@ -1,10 +1,5 @@
 <div align='center'>
 # PypiReCom
-
-[![latest commit to dev badge]][latest commit to dev link]
-
-[latest commit to dev link]: https://github.com/Animesh2210/Pypi-Recommender/commits/development
-[latest commit to dev badge]: https://flat.badgen.net/github/last-commit/invoke-ai/InvokeAI/development?icon=github&color=yellow&label=last%20dev%20commit&cache=900
 </div>
      
 ## Table of Content
