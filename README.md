@@ -1,6 +1,5 @@
-<div align='center'>
+<!-- <div align='center'> -->
 # PypiReCom
-</div>
      
 ## Table of Content
    * [1. Overview](#1-overview)
