@@ -1,5 +1,7 @@
-<div align="center">
-  <h1><b>PypiReCom</b></h1>
+<div align = "center">
+<h1> PypiReCom <h1>
+
+![PyPI Version Badge](https://img.shields.io/pypi/v/tigergraphcli) ![Python Versions Badge](https://img.shields.io/pypi/pyversions/tigergraphcli)
 </div>
 
 ## Table of Content
