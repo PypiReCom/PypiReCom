@@ -4,16 +4,8 @@
 
 **Want to build a new capability in Python?**
    
-   ---> Probably you would visit repositories like Pypi and see what's available
-   
-   ---> Explore git repo(s)
-   * Stack Overflow
-   * Medium
-   * Pypi
-   * Follow experts
-
-   ---> After this Search -> Review & Explore -> ***Decide what's relevant***
-   
+   * Probably you would visit repositories like Pypi and see what's available
+   ![Today's Flow](https://drive.google.com/uc?export=view&id=1rvj_N2Phs5tqc7KQz0U8qToqMSTfrl2N)   
 
    
 **Welcome to PypiReCom**
@@ -58,10 +50,9 @@ This is how we came to the idea of making life easy for developers.
 
 ***This is where our project helps.***
 
-## Architecture 
+## Architecture
 
-![Architecture](https://drive.google.com/uc?export=view&id=1mv6K3-fJBHN3hKH0qiquiW1lJOnmDf8Q)
-
+![Architecture](https://drive.google.com/uc?export=view&id=18H9Z11LaYCS0M-dG7iO3mTEVE-XxS0Rm)
 ## What have we done till now?
 
 ### Data Extraction
