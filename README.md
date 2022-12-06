@@ -1,6 +1,18 @@
 # PypiReCom 
 
-## Overview
+## Table of Content
+   * [1. Overview](#1-overview)
+   * [2. Problem Statement](#2-problem-statement)
+   * [3. Use Case](#3-use-case)
+   * [4. How we got the Idea?](#4-how-we-got-this-idea)
+   * [5. Architecture](#5-architecture)
+   * [6. What have we done till now?](#6-what-have-we-done-till-now)
+      * [6.1 Data Extraction](#61-data-extraction)
+      * [6.2 Data Selection & Graph](#62-selecting-the-data-and-making-a-dependecy-graph)
+   * [7. Result](#7-result)
+   * [8. Future Work](#8-future-work)
+
+## 1. Overview
 
 **Want to build a new capability in Python?**
    
@@ -13,32 +25,21 @@
    Let's make this all easy.
    ![Comparison](https://drive.google.com/uc?export=view&id=1PfvsuNlovTTNaaCJMa7QoFmbWWDdeRxT)
 
-
-## Table of Content
-   * [Problem Statement](#problem-statement)
-   * [Use Case](#use-case)
-   * [How we got the Idea?](#how-we-got-this-idea)
-   * [Architecture](#architecture)
-   * [What have we done till now?](#what-have-we-done-till-now)
-      * [Data Extraction](#data-extraction)
-      * [Data Selection & Graph](#selecting-the-data-and-making-a-dependecy-graph)
-   * [Result](#result)
-
-## Problem Statement
+## 2. Problem Statement
 This project is to solve a problem that is which package to choose
 while doing any kind of development or ML or GML or data  analysis or
 anything. The focus is to provide the users with package details of the
 best package available in the market that they can use to make 
 their work easy.
 
-## Use case
+## 3. Use case
 This can be used by developers to search for the package they need.
 
 This can be used to suggest packages to user working on some project.
 
 This can be used in providing the Depedency of any Pip package.
 
-## How we got this Idea?
+## 4. How we got this Idea?
 If we look at the current searching that is availble on the pypi 
 website, we can see that the results are not perfect to our need.
 
@@ -51,12 +52,12 @@ This is how we came to the idea of making life easy for developers.
 
 ***This is where our project helps.***
 
-## Architecture
+## 5. Architecture
 
 ![Architecture](https://drive.google.com/uc?export=view&id=18H9Z11LaYCS0M-dG7iO3mTEVE-XxS0Rm)
-## What have we done till now?
+## 6. What have we done till now?
 
-### Data Extraction
+### 6.1 Data Extraction
 We have collected the metadata of the packages from Pypi Public API available.
 
 ```http
@@ -137,7 +138,7 @@ This is how the Meta-Data is:
 We have more data on releases. This only package gives a result of 
 7000 lines of json.
 
-### Selecting the data and making a Dependecy Graph
+### 6.2 Selecting the data and making a Dependecy Graph
 
 We have used TigerGraph to make our Graph.
 
@@ -154,7 +155,7 @@ This was good, the graph we got after loading some data:
 ![Graph](https://drive.google.com/uc?export=view&id=1lOPOKEZmAMGajljnNIC5n2CSb5O8A7WH)
 
 We did not have anything to Search so we added Search Meta
-## Result
+## 7. Result
 ![Final Schema](https://drive.google.com/uc?export=view&id=1SojGsbzC30sGFHFgSpQPy4a1KLlXvb_0)
 
 Now our Graph looks like:
@@ -167,7 +168,7 @@ Now our Graph looks like:
 
 
 
-## Future Work
+## 8. Future Work
 Our next step is to generate a confidence score that helps us in rating the packages.
 
 Once that is working. Our project has to get the input from the users that what are the 
