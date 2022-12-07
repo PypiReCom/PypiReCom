@@ -1,0 +1,5 @@
+CREATE QUERY Search_Query(/* Parameters here */) FOR GRAPH Graph_2 { 
+  /* Write query logic here */ 
+  result = SELECT p FROM Package:p where p.Search_Meta LIKE "%graph%";
+  PRINT result;
+}
