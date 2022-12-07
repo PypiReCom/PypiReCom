@@ -1,0 +1,7 @@
+Edge Type,Source Vertex ID,Source Vertex Type,Target Vertex ID,Target Vertex Type
+curr_status,DGL,Package,3 - Alpha,Dev_Status
+curr_status,Torch,Package,5 - Production/Stable,Dev_Status
+curr_status,MXNet,Package,5 - Production/Stable,Dev_Status
+curr_status,TensorFlow,Package,5 - Production/Stable,Dev_Status
+curr_status,Flax,Package,3 - Alpha,Dev_Status
+curr_status,Haiku,Package,3 - Alpha,Dev_Status

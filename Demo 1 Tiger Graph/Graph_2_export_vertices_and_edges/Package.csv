@@ -1,0 +1,8 @@
+Vertex ID,Vertex Type,Author,Author_Email,Search_Meta
+DGL,Package,,,deep graph library
+Flax,Package,Flax team,flax-dev@google.com,neural | network | jax | flexibility | cnn | graph
+Haiku,Package,Sean Healy,jalopeura@hotmail.com,haiku | api
+MXNet,Package,,,
+Spektral,Package,Daniele Grattarola,daniele.grattarola@gmail.com,neural | generalgnn | spektral | google
+TensorFlow,Package,Google Inc,packages@tensorflow.org,artificial intelligence | mathematics | open source | machine learning | tensor | cluster
+Torch,Package,PyTorch Team,packages@pytorch.org,

@@ -1,0 +1,10 @@
+Edge Type,Source Vertex ID,Source Vertex Type,Target Vertex ID,Target Vertex Type
+used_lang,Spektral,Package,Python,Programming_Lang
+used_lang,Torch,Package,Python,Programming_Lang
+used_lang,Torch,Package,C++,Programming_Lang
+used_lang,MXNet,Package,C++,Programming_Lang
+used_lang,MXNet,Package,Cython,Programming_Lang
+used_lang,MXNet,Package,Python,Programming_Lang
+used_lang,MXNet,Package,Perl,Programming_Lang
+used_lang,TensorFlow,Package,Python,Programming_Lang
+used_lang,Flax,Package,Python,Programming_Lang
