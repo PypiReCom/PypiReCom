@@ -1,7 +1,8 @@
 <div align = "center">
 <h1> PypiReCom <h1>
 
-![PyPI Version Badge](https://img.shields.io/pypi/v/tigergraphcli) ![Python Versions Badge](https://img.shields.io/pypi/pyversions/tigergraphcli)
+![PyPI Version Badge](https://img.shields.io/pypi/v/tigergraphcli) ![Python Versions Badge](https://img.shields.io/pypi/pyversions/tigergraphcli) <a href="https://www.repostatus.org/#wip"><img src="https://www.repostatus.org/badges/latest/wip.svg" alt="Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public." /></a>
+
 </div>
 
 ## Table of Content
@@ -31,8 +32,7 @@
 
 ## 2. Problem Statement
 This project is to solve a problem that is which package to choose
-while doing any kind of development or ML or GML or data  analysis or
-anything. The focus is to provide the users with package details of the
+while doing any kind of development. The focus is to provide the users with package details of the
 best package available in the market that they can use to make 
 their work easy.
 
@@ -44,13 +44,13 @@ This can be used to suggest packages to user working on some project.
 This can be used in providing the Depedency of any Pip package.
 
 ## 4. How we got this Idea?
-If we look at the current searching that is availble on the pypi 
+If we look at the current searching that is available on the pypi 
 website, we can see that the results are not perfect to our need.
 
 ![Pypi Website Screenshot](https://drive.google.com/uc?export=view&id=1ixmx_J--8odR8abG2gN3hnhhiJL9WEQH)
 
 So we can see if we are searching for api development we get a lot of results.
-We have so many filters like framework, topic, development status, license that a new user will get confuse and it will be very hard for them to select the perfect package for their need.
+We have so many filters like framework, topic, development status, license that a new user will get confused and it will be hard for them to select the perfect package for their need.
 
 This is how we came to the idea of making life easy for developers.
 
