@@ -58,7 +58,7 @@ This is how we came to the idea of making life easy for developers.
 
 ## 5. Architecture
 
-![Architecture](https://drive.google.com/uc?export=view&id=18H9Z11LaYCS0M-dG7iO3mTEVE-XxS0Rm)
+![Architecture](https://drive.google.com/uc?export=view&id=1G_pTlWmt1tzxRi_0Gn9F-rCQaSBbp3uG)
 ## 6. What have we done till now?
 
 ### 6.1 Data Extraction
