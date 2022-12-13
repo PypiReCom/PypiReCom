@@ -23,8 +23,8 @@ def search_pypi(Search_Text: str):
         csv_file.writerow([Search_Text])
 
     # Data scrapping required for getting list of packages
-    packages = get_packages('https://pypi.org/search/?q='+Search_Text)
-    # print(packages)
+    packages = get_packages('https://pypi.org/search/?q='+'+'.join(Search_Text.split()))
+    print(packages)
     # creating directory
     create_directory(Search_Text)
     # Getting data of each package in the package list
