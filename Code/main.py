@@ -2,50 +2,45 @@ from fastapi import FastAPI
 import requests
 import csv
 import json
+from fuctions import *
 
 app = FastAPI()
 
-package_list = ['torch']
+packages = []
+
+def get_search_context():
+    pass
 
 @app.get('/search/')
 def search_pypi(Search_Text: str):
-    # response = (requests.get('https://pypi.org/search/?q='+search_Text).text)
+    Search_Text = '_'.join(Search_Text.split())
+    # If data already exist
+    with open("library/index.csv","r") as file:
+        if Search_Text in file.read().split():
+            return "We have data already"
+    with open("library/index.csv","a",newline='') as file:
+        csv_file = csv.writer(file)
+        csv_file.writerow([Search_Text])
+
     # Data scrapping required for getting list of packages
-
+    packages = get_packages('https://pypi.org/search/?q='+Search_Text)
+    # print(packages)
+    # creating directory
+    create_directory(Search_Text)
     # Getting data of each package in the package list
-    for package in package_list:
+    for package in packages:
         # Package data in Json format
-        response = (requests.get('https://pypi.python.org/pypi/'+package+'/json')).json()
-
-        # Picking nesseary data form Json file
-        package_name = response['info']['name']
-        package_author = response['info']['author']
-        package_author_email = response['info']['author_email']
-        package_license = response['info']['license']
-        programming_lang = set()
-        for classifier in response["info"]['classifiers']:
-            classifier_list = classifier.split(' :: ')
-            if 'Development Status' in classifier_list:
-                package_dev_status = classifier_list[-1]
-            elif 'Programming Language' in classifier_list:
-                programming_lang.add(classifier_list[1])
-        package_dependency = set()
-        for dependency in response['info']['requires_dist']:
-            package_dependency.add(dependency.split()[0])
-
-        # Inserting Data into Different files
+        print(package)
         try:
-            with open("Package_Basic_Data.csv","a", newline='') as file:
-                csv_file = csv.writer(file)
-                csv_file.writerow([package_name,package_author,package_author_email,package_license,package_dev_status,''])
-            with open("Package_Dependency.csv","a", newline='') as file:
-                csv_file = csv.writer(file)
-                for dependency_pkg in package_dependency:
-                    csv_file.writerow([package_name,dependency_pkg])
-            with open("Package_Prog_Lang.csv","a", newline='') as file:
-                csv_file = csv.writer(file)
-                for language in programming_lang:
-                    csv_file.writerow([package_name,language])
+            response = (requests.get('https://pypi.python.org/pypi/'+package+'/json')).json()
+            # print(response)
+            # Picking nesseary data form Json file
+            data = fetch_data(response)
+            # print(data)
+            # Saving data in library
+            save_data(Search_Text,data)
+            # return "Success"
         except:
-            print('Error')
-        return(response)
+            print("Error in response")
+    
+    return "Success"
