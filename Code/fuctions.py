@@ -2,6 +2,9 @@ from bs4 import BeautifulSoup
 import requests
 import csv
 import os
+import nltk
+nltk.download('stopwords')
+from nltk.corpus import stopwords
 
 def get_packages(link):
     packages = []
@@ -17,7 +20,7 @@ def get_packages(link):
 #     return data
 
 def fetch_data(response):
-    package_name = response['info']['name'] if response['info']['name'] != None else ''
+    package_name = response['info']['name'] 
     package_author = response['info']['author'] if response['info']['author'] != None else ''
     package_author_email = response['info']['author_email'] if response['info']['author_email'] != None else ''
     package_license = response['info']['license'] if response['info']['license'] != None else ''
@@ -66,4 +69,11 @@ def save_data(search_context,data):
         print('Error in saving')
 
 def generate_context(search_text):
-    return search_text
+    # Removing stop words
+    stop_words = stopwords.words('english')
+    words = search_text.split()
+    search_context = []
+    for word in words:
+        if word not in stop_words:
+            search_context.append(word)
+    return ' '.join(search_context)
