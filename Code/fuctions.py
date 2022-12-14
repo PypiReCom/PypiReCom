@@ -37,7 +37,8 @@ def fetch_data(response):
     
     return [package_name,package_author,package_author_email,package_license,package_dev_status,programming_lang,package_dependency]
 
-def create_directory(directory):
+def create_directory(search_context):
+    directory = '_'.join(search_context.split())
     # Parent Directory path
     parent_dir = "C:/Users/anime/Documents/PypiReCom/Code/library/"
     # Path
@@ -46,7 +47,7 @@ def create_directory(directory):
 
 def save_data(search_context,data):
     # Inserting Data into Different files
-    base_directory = "library/"+search_context
+    base_directory = "library/"+'_'.join(search_context.split())
     try:
         # Saving data to file
         package_name,package_author,package_author_email,package_license,package_dev_status,programming_lang,package_dependency = data
@@ -63,3 +64,6 @@ def save_data(search_context,data):
                 csv_file.writerow([package_name,language])
     except:
         print('Error in saving')
+
+def generate_context(search_text):
+    return search_text
