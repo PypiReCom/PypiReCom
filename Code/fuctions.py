@@ -72,3 +72,36 @@ def generate_context(search_text):
         if word not in stop_words:
             search_context.append(word)
     return ' '.join(search_context)
+
+def fetch_and_update(search_context):
+    with open("library/index.csv","a",newline='') as file:
+        csv_file = csv.writer(file)
+        csv_file.writerow(['_'.join(search_context.split())])
+        
+    # offline process
+    # Data scrapping required for getting list of packages
+    packages = []
+    for page in range(1,6):
+        packages += get_packages('https://pypi.org/search/?q=' + '+'.join(search_context.split()) + '&page=' + str(page))
+    # print(len(packages))
+
+    # creating directory
+    create_directory(search_context)
+    
+    # Getting data of each package in the package list
+    for package in packages:
+        # Package data in Json format
+        # print(package)
+        try:
+            response = (requests.get('https://pypi.python.org/pypi/'+package+'/json')).json()
+            # print(response)
+            # Picking nesseary data form Json file
+            data = fetch_data(response)
+            # print(data)
+            # Saving data in library
+            save_data(search_context,data)
+            # return "Success"
+        except:
+            print("Error in response")
+    
+    # return "Success"
