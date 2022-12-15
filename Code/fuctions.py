@@ -14,11 +14,6 @@ def get_packages(link):
         packages.append(str(package).split('/')[2])
     return packages
 
-# def check_data(data):
-#     if data == None:
-#         return ''
-#     return data
-
 def fetch_data(response):
     package_name = response['info']['name'] 
     package_author = response['info']['author'] if response['info']['author'] != None else ''
