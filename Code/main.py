@@ -17,9 +17,9 @@ async def search_pypi(search_text: str, background_task:BackgroundTasks):
     # If data already exist
     with open("library/index.csv","r") as file:
         if '_'.join(search_context.split()) in file.read().split():
-            return "We have data already"
+            print("We already have the data.")
+            return graph(search_context)
     
     # asyn function for fetching data and updation
-    background_task.add_task(fetch_and_update,search_context)
-
-    return "Success"
+    background_task.add_task(fetch_and_update_graph,search_context)
+    return "Check back after few minutes result is being prepared."

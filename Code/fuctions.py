@@ -3,8 +3,11 @@ import requests
 import csv
 import os
 import nltk
+import pandas as pd
+import json
 nltk.download('stopwords')
 from nltk.corpus import stopwords
+import pyTigerGraph as tg
 
 def get_packages(link):
     packages = []
@@ -42,6 +45,21 @@ def create_directory(search_context):
     # Path
     path = os.path.join(parent_dir, directory)
     os.mkdir(path)
+    ##
+    base_directory = "library/"+'_'.join(search_context.split())
+    try:
+        with open(base_directory+"/Package_Basic_Data.csv","a", newline='') as file:
+            csv_file = csv.writer(file)
+            csv_file.writerow(['package_name','package_author','package_author_email','package_license','package_dev_status','search_meta'])
+        with open(base_directory+"/Package_Dependency.csv","a", newline='') as file:
+            csv_file = csv.writer(file)
+            csv_file.writerow(['package_name','dependency_pkg'])
+        with open(base_directory+"/Package_Prog_Lang.csv","a", newline='') as file:
+            csv_file = csv.writer(file)
+            csv_file.writerow(['package_name','language'])
+    except:
+        print('Error in creating file')
+
 
 def save_data(search_context,data):
     # Inserting Data into Different files
@@ -73,7 +91,7 @@ def generate_context(search_text):
             search_context.append(word)
     return ' '.join(search_context)
 
-def fetch_and_update(search_context):
+def fetch_and_update_graph(search_context):     #description
     with open("library/index.csv","a",newline='') as file:
         csv_file = csv.writer(file)
         csv_file.writerow(['_'.join(search_context.split())])
@@ -104,4 +122,104 @@ def fetch_and_update(search_context):
         except:
             print("Error in response")
     
+    # Graph Generation function
+    generate_graph(search_context)
     # return "Success"
+
+def generate_graph(search_context):     # 
+    base_directory = "library/"+'_'.join(search_context.split())
+    # try catch
+    # making connection
+    conn = tg.TigerGraphConnection(
+        host='https://cab6c8c57c1140ac9283258d135b57d6.i.tgcloud.io',
+        graphname='Test',
+        gsqlSecret='elgabddfotvdu68tgmq0b79d6a1pqevh',
+    )
+    auth_token = conn.getToken('elgabddfotvdu68tgmq0b79d6a1pqevh')
+    conn.delVertices("Package")
+    conn.delVertices("Programming_Lang")
+    conn.delVertices("License")
+    conn.delVertices("Dependency_Package")
+    conn.delVertices("Dev_Status")
+    # print(auth_token)
+    # print(conn.getSchema())
+    package_vertex = []
+    edge_1 = []
+    edge_2 = []
+    edge_3 = []
+    edge_4 = []
+
+    data = []
+    with open(base_directory+"/Package_Basic_Data.csv","r") as file:
+        csv_reader = csv.reader(file)
+        for row in csv_reader:
+            data.append(row)
+    # print(l)
+    df = pd.DataFrame(data)
+    df.columns = df.iloc[0]
+    df = df.tail(-1)
+    # print(df)
+    for index in df.index:
+        # print(df["package_name"][index],df["package_author"][index])
+        # conn.upsertVertex("Package",df["package_name"][index], {"author" : df["package_author"][index],
+        #                                                         "author_email" : df["package_author_email"][index],
+        #                                                         "dev_status" : df["package_dev_status"][index],
+        #                                                         "search_meta" : df["search_meta"][index]})
+        package_vertex.append((df["package_name"][index], {"author" : df["package_author"][index],
+                                                                "author_email" : df["package_author_email"][index],
+                                                                "dev_status" : df["package_dev_status"][index],
+                                                                "search_meta" : df["search_meta"][index]}))
+        # conn.upsertVertices
+        # conn.upsertVertex("Dev_Status",df["package_dev_status"][index], {})
+        # conn.upsertVertex("License",df["package_license"][index], {})
+        # conn.upsertEdge("Package",df["package_name"][index],"curr_status","Dev_Status",df["package_dev_status"][index],{})
+        # conn.upsertEdge("Package",df["package_name"][index],"has_license","License",df["package_license"][index],{})
+        edge_1.append((df["package_name"][index],df["package_dev_status"][index],{}))
+        edge_2.append((df["package_name"][index],df["package_license"][index],{}))
+    # print(package_vertex)
+
+    data = []
+    with open(base_directory+"/Package_Prog_Lang.csv","r") as file:
+        csv_reader = csv.reader(file)
+        for row in csv_reader:
+            data.append(row)
+    # print(data)
+    df = pd.DataFrame(data)
+    df.columns = df.iloc[0]
+    df = df.tail(-1)
+    for index in df.index:
+        # conn.upsertVertex("Programming_Lang",df["package_license"][index], {})
+        # conn.upsertEdge("Package",df["package_name"][index],"used_language","Programming_Lang",df["language"][index],{})
+        edge_3.append((df["package_name"][index],df["language"][index],{}))
+    
+    data = []
+    with open(base_directory+"/Package_Dependency.csv","r") as file:
+        csv_reader = csv.reader(file)
+        for row in csv_reader:
+            data.append(row)
+    # print(data)
+    df = pd.DataFrame(data)
+    df.columns = df.iloc[0]
+    df = df.tail(-1)
+    for index in df.index:
+        # conn.upsertVertex("Dependency_Package",df["dependency_pkg"][index], {}) 
+        # conn.upsertEdge("Package",df["package_name"][index],"has_dependency","Dependency_Package",df["dependency_pkg"][index],{})
+        edge_4.append((df["package_name"][index],df["dependency_pkg"][index],{}))
+
+    result = (conn.upsertVertices("Package",package_vertex) and conn.upsertEdges("Package","curr_status","Dev_Status",edge_1)
+            and conn.upsertEdges("Package","has_license","License",edge_2) and conn.upsertEdges("Package","used_language","Programming_Lang",edge_3)
+            and conn.upsertEdges("Package","has_dependency","Dependency_Package",edge_4))
+    if result:
+        print("Graph Generated for "+search_context)
+        graph = conn.runInstalledQuery("Stable_packages")
+        print(type(graph[0]))
+        with open(base_directory+"/graph.json", "w") as graphfile:
+            json.dump(graph[0], graphfile)
+    else:
+        print("Error in graph generation.")
+    # elgabddfotvdu68tgmq0b79d6a1pqevh
+
+def graph(search_context):
+    base_directory = "library/"+'_'.join(search_context.split())
+    with open(base_directory+"/graph.json", "r") as graphfile:
+        return json.load(graphfile) 
