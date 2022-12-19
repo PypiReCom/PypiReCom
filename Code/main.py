@@ -12,7 +12,6 @@ packages = []
 async def search_pypi(search_text: str, background_task:BackgroundTasks):
     # Generating search context
     search_context = generate_context(search_text)
-    # print(search_context)
 
     # If data already exist
     with open("library/index.csv","r") as file:
@@ -22,4 +21,5 @@ async def search_pypi(search_text: str, background_task:BackgroundTasks):
     
     # asyn function for fetching data and updation
     background_task.add_task(fetch_and_update_graph,search_context)
+    
     return "Check back after few minutes result is being prepared."
