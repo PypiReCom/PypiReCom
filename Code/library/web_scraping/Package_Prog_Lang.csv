@@ -11,8 +11,8 @@ scraping-tools,Python
 scraping-toolbox,Python
 nba-scraping-api,Python
 youtube-scraping-api,Python
-scrapy-scraping-link,Python
 scraping-common-bot,Python
+scrapy-scraping-link,Python
 research-scraping-tool,Python
 Scraping-Perlverity-Python,Python
 scape-academy,Python
@@ -50,11 +50,10 @@ autoscraper,Python
 gg-scrape,Python
 webtree,Python
 random-scraper,Python
-melpoi,Python
 gi-scraper,Python
 scrapist,Python
+scraper-Rafihatu,Python
 tractor_common,Python
-scrapr,Python
 scraper-Rafihatu,Python
 zubbi,Python
 gwws-genwch,Python
@@ -63,7 +62,7 @@ joker-diskcache,Python
 vilnius-aruodas-scraper,Python
 graphscraper,Python
 serp-bot,Python
-pysport,Python
 AmazonWebScraper,Python
+pysport,Python
 cleverutils,Python
 ga-attribution-scrape,Python

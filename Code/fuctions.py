@@ -207,7 +207,7 @@ def generate_graph(Search_Context):
         conn.delVertices("Dev_Status")
 
         # Creating list for bulk updatation
-        package_vertex, edge_1, edge_2, edge_3, edge_4 = []
+        package_vertex, edge_1, edge_2, edge_3, edge_4 = [],[],[],[],[]
 
         # Extracting data from Package_Basic_Data csv
         data = []
