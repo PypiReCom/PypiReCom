@@ -8,6 +8,7 @@ import json
 nltk.download('stopwords')
 from nltk.corpus import stopwords
 import pyTigerGraph as tg
+from datetime import date
 
 def get_packages(link):
     '''
@@ -92,7 +93,7 @@ def create_directory(Search_Context):
             csv_file = csv.writer(file)
             csv_file.writerow(['package_name','language'])
     except:
-        print('Error in creating file')
+        print('Error in creating file.')
         return "Error in file creation"
     
     return "Folder created"
@@ -127,7 +128,7 @@ def save_data(Search_Context,data):
 
 
 
-def generate_context(search_text):
+def generate_context(Search_Text):
     '''
     This function generates the search context by taking the text being searched as input and returns the text after removing the stop words.
 
@@ -137,7 +138,7 @@ def generate_context(search_text):
     '''
     # Removing stop words
     stop_words = stopwords.words('english')
-    words = search_text.split()
+    words = Search_Text.split()
     Search_Context = []
     for word in words:
         if word not in stop_words:
@@ -166,6 +167,7 @@ def csv_to_df(directory):
     return df
 
 
+
 def connect_tigergraph(credentials):
     conn = tg.TigerGraphConnection(
         host = credentials['host'],
@@ -174,7 +176,6 @@ def connect_tigergraph(credentials):
     )
     auth_token = conn.getToken(credentials['gsqlSecret'])
     return conn,auth_token
-
 
 
 
@@ -236,8 +237,10 @@ def generate_graph(Search_Context,credentials):
             graph = conn.runInstalledQuery("Stable_packages")
             with open(base_directory+"/graph.json", "w") as graphfile:
                 json.dump(graph[0], graphfile)
+            return "Graph generated"
         else:
-            print("Error in graph generation.")
+            print("Error in graph generation")
+            return "Error in graph generation"
     except:
         print("Connection error")
 
@@ -249,16 +252,13 @@ def fetch_and_update_graph(Search_Context,credentials):
 
     This function performs multiple functionalities:
 
-    1.) Adding the seach_context to index file and Creating list of packages by invoking get_packages function
-    2.) Invoking create_directory to create folder at ../library/{search_context}
+    1.) Creating list of packages by invoking get_packages function
+    2.) Invoking create_directory to create folder at ../library/{Search_Context}
     3.) Sending GET request to fetch the data of all the packages from the list
     4.) Invoking graph_generation to upload the data to TigerGraph and create the Json file of graph
 
     '''
     # 1
-    with open("library/index.csv","a",newline='') as file:
-        csv_file = csv.writer(file)
-        csv_file.writerow(['_'.join(Search_Context.split())])
     # Data scrapping required for getting list of packages
     packages = []
     # Taking 100 Packages from the first 5 pages
@@ -280,7 +280,10 @@ def fetch_and_update_graph(Search_Context,credentials):
                 print("Error in response")
     
     # 4. Graph Generation function
-    generate_graph(Search_Context,credentials)
+    if generate_graph(Search_Context,credentials) == "Graph generated":
+        with open("library/index.csv","a",newline='') as file:
+            csv_file = csv.writer(file)
+            csv_file.writerow(['_'.join(Search_Context.split()),date.today()])
 
 
 
@@ -292,10 +295,11 @@ def graph(Search_Context):
 
     Output: Returns the graph data in json format.
     '''
-    # Creating the base address
-    base_directory = "library/"+'_'.join(Search_Context.split())
-    # Seaching for the graph in the base address
-    with open(base_directory+"/graph.json", "r") as graphfile:
-        return json.load(graphfile) 
-
-    # elgabddfotvdu68tgmq0b79d6a1pqevh
+    try:
+        # Creating the base address
+        base_directory = "library/"+'_'.join(Search_Context.split())
+        # Seaching for the graph in the base address
+        with open(base_directory+"/graph.json", "r") as graphfile:
+            return json.load(graphfile) 
+    except:
+        return "Please check back later."
