@@ -3,6 +3,8 @@ import requests
 import csv
 import json
 from fuctions import *
+import yaml
+from yaml.loader import SafeLoader
 
 app = FastAPI()
 
@@ -22,8 +24,10 @@ async def search_pypi(search_text: str, background_task:BackgroundTasks):
                 return graph(search_context)
     except:
         return "Please check back again"
-
+    
+    # If it is a new search_context
+    credentials = yaml.load(open('TigerGraph_SecretKey.yml'),Loader=SafeLoader)
     # asyn function for fetching data and updation
-    background_task.add_task(fetch_and_update_graph,search_context)
+    background_task.add_task(fetch_and_update_graph,search_context,credentials)
     
     return "Check back after few minutes result is being prepared."

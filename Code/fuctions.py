@@ -73,7 +73,11 @@ def create_directory(Search_Context):
     # Defining the path as ../library/{directory}
     path = os.path.join(parent_dir, directory)
     # Creating the directory
-    os.mkdir(path)
+    try:
+        os.mkdir(path)
+    except:
+        print("Folder can not be created.")
+        return "Folder can not be created"
 
     # Creating the differnt csv(s)
     base_directory = "library/"+'_'.join(Search_Context.split())
@@ -89,6 +93,9 @@ def create_directory(Search_Context):
             csv_file.writerow(['package_name','language'])
     except:
         print('Error in creating file')
+        return "Error in file creation"
+    
+    return "Folder created"
 
 
 
@@ -139,49 +146,39 @@ def generate_context(search_text):
 
 
 
-def fetch_and_update_graph(Search_Context):
+def csv_to_df(directory):
     '''
-    Input parameter: Space seperaetd keywords to be searched -> Search_Context (In address or any operation _ is used to join the Search_Context)
+    Input: Takes the address of the csv file -> directory
 
-    This function scrapes data from the pypi website after searching the Search_Context
-    
-    Create a new folder/directory under library in the name of Search_Context
-    
-    Creates 3 different csv(s) of the packages meta data
-    
-    Generates the graph of the Search_Context
+    The function takes csv file's location and provides the data in a data frame using pandas
+
+    Output: The function returns a data frame which has the data of the different csv(s)
     '''
-    with open("library/index.csv","a",newline='') as file:
-        csv_file = csv.writer(file)
-        csv_file.writerow(['_'.join(Search_Context.split())])
-        
-    # Data scrapping required for getting list of packages
-    packages = []
-    # Taking 100 Packages from the first 5 pages
-    for page in range(1,6):
-        packages += get_packages('https://pypi.org/search/?q=' + '+'.join(Search_Context.split()) + '&page=' + str(page))
+    # Extracting data from Package_Basic_Data csv
+    data = []
+    with open(directory,"r") as file:
+        csv_reader = csv.reader(file)
+        for row in csv_reader:
+            data.append(row)
+    df = pd.DataFrame(data) # Creating Dataframe
+    df.columns = df.iloc[0] #Setting columns as 1dt row
+    df = df.tail(-1)    #Removing 1st row
+    return df
 
-    # creating directory
-    create_directory(Search_Context)
-    
-    # Getting data of each package in the package list
-    for package in packages:
-        # Package data in Json format
-        try:
-            response = (requests.get('https://pypi.python.org/pypi/'+package+'/json')).json()
-            # Picking nesseary data form Json file
-            data = fetch_data(response)
-            # Saving data in library
-            save_data(Search_Context,data)
-        except:
-            print("Error in response")
-    
-    # Graph Generation function
-    generate_graph(Search_Context)
+
+def connect_tigergraph(credentials):
+    conn = tg.TigerGraphConnection(
+        host = credentials['host'],
+        graphname = credentials['graphname'],
+        gsqlSecret = credentials['gsqlSecret']
+    )
+    auth_token = conn.getToken(credentials['gsqlSecret'])
+    return conn,auth_token
 
 
 
-def generate_graph(Search_Context):     
+
+def generate_graph(Search_Context,credentials):     
     '''
     Generating the graph by extracting the data from the csv(s) generated and updating on Tiger Graoh
     
@@ -190,16 +187,11 @@ def generate_graph(Search_Context):
     Output: Json response of graph query.
     ''' 
     base_directory = "library/"+'_'.join(Search_Context.split())
-
     try:
         # making connection
-        conn = tg.TigerGraphConnection(
-            host='https://cab6c8c57c1140ac9283258d135b57d6.i.tgcloud.io',
-            graphname='Test',
-            gsqlSecret='elgabddfotvdu68tgmq0b79d6a1pqevh',
-        )
-        auth_token = conn.getToken('elgabddfotvdu68tgmq0b79d6a1pqevh')
-        # Deleting the current graph data
+        conn,auth_token = connect_tigergraph(credentials)
+
+        #  Deleting the current graph data
         conn.delVertices("Package")
         conn.delVertices("Programming_Lang")
         conn.delVertices("License")
@@ -210,14 +202,8 @@ def generate_graph(Search_Context):
         package_vertex, edge_1, edge_2, edge_3, edge_4 = [],[],[],[],[]
 
         # Extracting data from Package_Basic_Data csv
-        data = []
-        with open(base_directory+"/Package_Basic_Data.csv","r") as file:
-            csv_reader = csv.reader(file)
-            for row in csv_reader:
-                data.append(row)
-        df = pd.DataFrame(data) # Creating Dataframe
-        df.columns = df.iloc[0] #Setting columns as 1dt row
-        df = df.tail(-1)    #Removing 1st row
+        df = csv_to_df(base_directory+"/Package_Basic_Data.csv")
+
         # Adding data tupple in list for updation
         for index in df.index:
             package_vertex.append((df["package_name"][index], {"author" : df["package_author"][index],
@@ -228,31 +214,20 @@ def generate_graph(Search_Context):
             edge_2.append((df["package_name"][index],df["package_license"][index],{}))
 
         # Extracting data from Package_Prog_Lang csv
-        data = []
-        with open(base_directory+"/Package_Prog_Lang.csv","r") as file:
-            csv_reader = csv.reader(file)
-            for row in csv_reader:
-                data.append(row)
-        df = pd.DataFrame(data) # Creating Dataframe
-        df.columns = df.iloc[0] #Setting columns as 1dt row
-        df = df.tail(-1)    #Removing 1st row
+        df = csv_to_df(base_directory+"/Package_Prog_Lang.csv")
+
         # Adding data tupple in list for updation
         for index in df.index:
             edge_3.append((df["package_name"][index],df["language"][index],{}))
         
         # Extracting data from Package_Dependency csv
-        data = []
-        with open(base_directory+"/Package_Dependency.csv","r") as file:
-            csv_reader = csv.reader(file)
-            for row in csv_reader:
-                data.append(row)
-        df = pd.DataFrame(data) # Creating Dataframe
-        df.columns = df.iloc[0] #Setting columns as 1dt row
-        df = df.tail(-1)    #Removing 1st row
+        df = csv_to_df(base_directory+"/Package_Dependency.csv")
+
         # Adding data tupple in list for updation
         for index in df.index:
             edge_4.append((df["package_name"][index],df["dependency_pkg"][index],{}))
-
+            
+        # Adding all the Vertices and Edges to the Tiger Graph
         result = (conn.upsertVertices("Package",package_vertex) and conn.upsertEdges("Package","curr_status","Dev_Status",edge_1)
                 and conn.upsertEdges("Package","has_license","License",edge_2) and conn.upsertEdges("Package","used_language","Programming_Lang",edge_3)
                 and conn.upsertEdges("Package","has_dependency","Dependency_Package",edge_4))
@@ -265,6 +240,47 @@ def generate_graph(Search_Context):
             print("Error in graph generation.")
     except:
         print("Connection error")
+
+
+
+def fetch_and_update_graph(Search_Context,credentials):
+    '''
+    Input parameter: Space seperaetd keywords to be searched -> Search_Context (In address or any operation _ is used to join the Search_Context)
+
+    This function performs multiple functionalities:
+
+    1.) Adding the seach_context to index file and Creating list of packages by invoking get_packages function
+    2.) Invoking create_directory to create folder at ../library/{search_context}
+    3.) Sending GET request to fetch the data of all the packages from the list
+    4.) Invoking graph_generation to upload the data to TigerGraph and create the Json file of graph
+
+    '''
+    # 1
+    with open("library/index.csv","a",newline='') as file:
+        csv_file = csv.writer(file)
+        csv_file.writerow(['_'.join(Search_Context.split())])
+    # Data scrapping required for getting list of packages
+    packages = []
+    # Taking 100 Packages from the first 5 pages
+    for page in range(1,6):
+        packages += get_packages('https://pypi.org/search/?q=' + '+'.join(Search_Context.split()) + '&page=' + str(page))
+
+    # 2. creating directory
+    if create_directory(Search_Context) == "Folder created":
+        # 3. Getting data of each package in the package list
+        for package in packages:
+            # Package data in Json format
+            try:
+                response = (requests.get('https://pypi.python.org/pypi/'+package+'/json')).json()
+                # Picking nesseary data form Json file
+                data = fetch_data(response)
+                # Saving data in library
+                save_data(Search_Context,data)
+            except:
+                print("Error in response")
+    
+    # 4. Graph Generation function
+    generate_graph(Search_Context,credentials)
 
 
 
