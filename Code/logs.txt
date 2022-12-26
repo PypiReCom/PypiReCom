@@ -1,1 +1,5 @@
 26-12-22 ERROR-Connection error
+26-12-22 ERROR-Folder can not be created for background_task
+26-12-22 ERROR-Error in saving data for time folder and package: pyunit-time
+26-12-22 ERROR-Error in saving data for time folder and package: time-converters
+26-12-22 ERROR-Error in saving data for time folder and package: get-time

@@ -15,7 +15,8 @@ def fetch_search_context():     # Return the list of all the Search Context avai
         with open("library/index.csv","r") as file:
             for Search_Context in file.read().split():
                 search_context_list.append({'Search Context' : Search_Context.split(',')[0],
-                                            'Date Updated' : Search_Context.split(',')[1]})
+                                            'Date Updated' : Search_Context.split(',')[1],
+                                            'Total Packages' : Search_Context.split(',')[2]})
         return search_context_list
     except:
         return "Error in fetching data."

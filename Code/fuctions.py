@@ -5,8 +5,8 @@ import os
 import nltk
 import pandas as pd
 import json
-nltk.download('stopwords')
 from nltk.corpus import stopwords
+# nltk.download('stopwords')
 import pyTigerGraph as tg
 from datetime import date
 from time import time
@@ -81,7 +81,7 @@ def create_directory(Search_Context):
         os.mkdir(path)
     except:
         print("Folder can not be created.")
-        logging.error('Folder can not be created for ' + '_'.join(Search_Context))
+        logging.error('Folder can not be created for ' + '_'.join(Search_Context.split()))
         return "Folder can not be created"
 
     # Creating the differnt csv(s)
@@ -98,7 +98,7 @@ def create_directory(Search_Context):
             csv_file.writerow(['package_name','language'])
     except:
         print('Error in creating file.')
-        logging.error('Error in creating file in ' + '_'.join(Search_Context) + ' folder')
+        logging.error('Error in creating file in ' + '_'.join(Search_Context.split()) + ' folder')
         return "Error in file creation"
     
     return "Folder created"
@@ -129,8 +129,9 @@ def save_data(Search_Context,data):
             for language in programming_lang:
                 csv_file.writerow([package_name,language])
     except:
-        logging.error('Error in saving data for ' + '_'.join(Search_Context) + ' folder and package: '+ package_name)
+        logging.error('Error in saving data for ' + '_'.join(Search_Context.split()) + ' folder and package: '+ package_name)
         print('Error in saving')
+        raise Exception('Error in saving')
 
 
 
@@ -276,6 +277,7 @@ def fetch_and_update_graph(Search_Context,credentials):
     for page in range(1,6):
         packages += get_packages('https://pypi.org/search/?q=' + '+'.join(Search_Context.split()) + '&page=' + str(page))
 
+    package_count = 0
     # 2. creating directory
     if create_directory(Search_Context) == "Folder created":
         # 3. Getting data of each package in the package list
@@ -287,6 +289,7 @@ def fetch_and_update_graph(Search_Context,credentials):
                 data = fetch_data(response)
                 # Saving data in library
                 save_data(Search_Context,data)
+                package_count = package_count + 1
             except:
                 print("Error in response")
     
@@ -294,7 +297,7 @@ def fetch_and_update_graph(Search_Context,credentials):
     if generate_graph(Search_Context,credentials) == "Graph generated":
         with open("library/index.csv","a",newline='') as file:
             csv_file = csv.writer(file)
-            csv_file.writerow(['_'.join(Search_Context.split()),date.today()])
+            csv_file.writerow(['_'.join(Search_Context.split()),date.today(),package_count])
         print("Time taken: ",time()-init)
     # Else delete directory.
 
