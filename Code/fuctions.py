@@ -9,6 +9,9 @@ nltk.download('stopwords')
 from nltk.corpus import stopwords
 import pyTigerGraph as tg
 from datetime import date
+from time import time
+import logging
+logging.basicConfig(filename='logs.txt', filemode='a', format='%(asctime)s %(levelname)s-%(message)s', datefmt='%d-%m-%y')
 
 def get_packages(link):
     '''
@@ -78,6 +81,7 @@ def create_directory(Search_Context):
         os.mkdir(path)
     except:
         print("Folder can not be created.")
+        logging.error('Folder can not be created for ' + '_'.join(Search_Context))
         return "Folder can not be created"
 
     # Creating the differnt csv(s)
@@ -94,6 +98,7 @@ def create_directory(Search_Context):
             csv_file.writerow(['package_name','language'])
     except:
         print('Error in creating file.')
+        logging.error('Error in creating file in ' + '_'.join(Search_Context) + ' folder')
         return "Error in file creation"
     
     return "Folder created"
@@ -124,6 +129,7 @@ def save_data(Search_Context,data):
             for language in programming_lang:
                 csv_file.writerow([package_name,language])
     except:
+        logging.error('Error in saving data for ' + '_'.join(Search_Context) + ' folder and package: '+ package_name)
         print('Error in saving')
 
 
@@ -169,13 +175,16 @@ def csv_to_df(directory):
 
 
 def connect_tigergraph(credentials):
-    conn = tg.TigerGraphConnection(
-        host = credentials['host'],
-        graphname = credentials['graphname'],
-        gsqlSecret = credentials['gsqlSecret']
-    )
-    auth_token = conn.getToken(credentials['gsqlSecret'])
-    return conn,auth_token
+    try:
+        conn = tg.TigerGraphConnection(
+            host = credentials['host'],
+            graphname = credentials['graphname'],
+            gsqlSecret = credentials['gsqlSecret']
+        )
+        auth_token = conn.getToken(credentials['gsqlSecret'])
+        return conn,auth_token
+    except:
+        logging.error('Connection error')
 
 
 
@@ -240,6 +249,7 @@ def generate_graph(Search_Context,credentials):
             return "Graph generated"
         else:
             print("Error in graph generation")
+            logging.error('Error in generating graph for ' + Search_Context)
             return "Error in graph generation"
     except:
         print("Connection error")
@@ -258,6 +268,7 @@ def fetch_and_update_graph(Search_Context,credentials):
     4.) Invoking graph_generation to upload the data to TigerGraph and create the Json file of graph
 
     '''
+    init = time()
     # 1
     # Data scrapping required for getting list of packages
     packages = []
@@ -284,6 +295,8 @@ def fetch_and_update_graph(Search_Context,credentials):
         with open("library/index.csv","a",newline='') as file:
             csv_file = csv.writer(file)
             csv_file.writerow(['_'.join(Search_Context.split()),date.today()])
+        print("Time taken: ",time()-init)
+    # Else delete directory.
 
 
 
