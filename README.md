@@ -14,6 +14,7 @@
    * [6. What have we done till now?](#6-what-have-we-done-till-now)
       * [6.1 Data Extraction](#61-data-extraction)
       * [6.2 Data Selection & Graph](#62-selecting-the-data-and-making-a-dependecy-graph)
+      * [6.3 Coding the concept](#63-coding-the-concept)
    * [7. Result](#7-result)
    * [8. Future Work](#8-future-work)
 
@@ -32,7 +33,8 @@
 
 ## 2. Problem Statement
 This project is to solve a problem that is which package to choose
-while doing any kind of development. The focus is to provide the users with package details of the
+while doing any kind of development or ML or GML or data  analysis or
+anything. The focus is to provide the users with package details of the
 best package available in the market that they can use to make 
 their work easy.
 
@@ -44,13 +46,13 @@ This can be used to suggest packages to user working on some project.
 This can be used in providing the Depedency of any Pip package.
 
 ## 4. How we got this Idea?
-If we look at the current searching that is available on the pypi 
+If we look at the current searching that is availble on the pypi 
 website, we can see that the results are not perfect to our need.
 
 ![Pypi Website Screenshot](https://drive.google.com/uc?export=view&id=1ixmx_J--8odR8abG2gN3hnhhiJL9WEQH)
 
 So we can see if we are searching for api development we get a lot of results.
-We have so many filters like framework, topic, development status, license that a new user will get confused and it will be hard for them to select the perfect package for their need.
+We have so many filters like framework, topic, development status, license that a new user will get confuse and it will be very hard for them to select the perfect package for their need.
 
 This is how we came to the idea of making life easy for developers.
 
@@ -58,7 +60,7 @@ This is how we came to the idea of making life easy for developers.
 
 ## 5. Architecture
 
-![Architecture](https://drive.google.com/uc?export=view&id=1G_pTlWmt1tzxRi_0Gn9F-rCQaSBbp3uG)
+![Architecture](https://drive.google.com/uc?export=view&id=1oUOOIG2USWKgtTOAXqaBzkgqrgDFN4pY)
 ## 6. What have we done till now?
 
 ### 6.1 Data Extraction
@@ -159,6 +161,20 @@ This was good, the graph we got after loading some data:
 ![Graph](https://drive.google.com/uc?export=view&id=1lOPOKEZmAMGajljnNIC5n2CSb5O8A7WH)
 
 We did not have anything to Search so we added Search Meta
+
+### 6.3 Coding the concept
+
+Our code folder contains two python files one is main.py and another functions.py. It also contains library folder in which all the Search Context have their folders.
+
+Main.py file contains the api code which provides the endpoint for list of available packages and for searching any package.
+
+Functions.py contains all the requierd function for the whole process. 
+
+This includes -> Getting the search text -> Removing stopwords -> Scraping the package names from Pypi -> Fetching & saving the meta data of each package -> Creating the graph -> adding the search context to the index.
+
+All the graph that is generated is queried and the result is saved as a json response in /library/{Search_Context}. Also the csv files created are stored here.
+
+![Library Flow](https://drive.google.com/uc?export=view&id=1ZYx04Jh6gOywqY_RaA9UVRKL9HkUF726)
 ## 7. Result
 ![Final Schema](https://drive.google.com/uc?export=view&id=1SojGsbzC30sGFHFgSpQPy4a1KLlXvb_0)
 
