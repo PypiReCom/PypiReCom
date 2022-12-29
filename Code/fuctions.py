@@ -201,8 +201,9 @@ def generate_graph(Search_Context,credentials):
     try:
         # making connection
         conn,auth_token = connect_tigergraph(credentials)
-
-        #  Deleting the current graph data
+        
+        # commenting these will permit the graph to evolve as more searches are involved
+        # Deleting the current graph data
         conn.delVertices("Package")
         conn.delVertices("Programming_Lang")
         conn.delVertices("License")
