@@ -1,0 +1,3 @@
+requirements
+graphviz
+streamlit_extras.switch_page_button.switch_page
