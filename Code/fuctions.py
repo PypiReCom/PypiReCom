@@ -245,7 +245,7 @@ def generate_graph(Search_Context,credentials):
                 and conn.upsertEdges("Package","has_dependency","Dependency_Package",edge_4))
         if result:
             print("Graph Generated for "+Search_Context)
-            graph = conn.runInstalledQuery("Stable_packages")
+            graph = conn.runInstalledQuery("Stable_Package_Graph_wData")
             with open(base_directory+"/graph.json", "w") as graphfile:
                 json.dump(graph[0], graphfile)
             return "Graph generated"

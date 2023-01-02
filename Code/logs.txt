@@ -3,3 +3,29 @@
 26-12-22 ERROR-Error in saving data for time folder and package: pyunit-time
 26-12-22 ERROR-Error in saving data for time folder and package: time-converters
 26-12-22 ERROR-Error in saving data for time folder and package: get-time
+30-12-22 ERROR-Folder can not be created for 
+30-12-22 ERROR-Connection error
+30-12-22 ERROR-Connection error
+30-12-22 ERROR-Error in saving data for chart_plot folder and package: chart4t
+30-12-22 ERROR-Connection error
+30-12-22 ERROR-Folder can not be created for chart_plot
+30-12-22 ERROR-Connection error
+30-12-22 ERROR-Folder can not be created for chart_plot
+31-12-22 ERROR-Folder can not be created for Gnn
+31-12-22 ERROR-Connection error
+31-12-22 ERROR-Folder can not be created for Gnn
+31-12-22 ERROR-Connection error
+31-12-22 ERROR-Error in saving data for graph_neural_network folder and package: tada0-toddler-neural-network
+31-12-22 ERROR-Error in saving data for time folder and package: pyunit-time
+31-12-22 ERROR-Error in saving data for time folder and package: get-time
+31-12-22 ERROR-Error in saving data for time folder and package: time-converters
+31-12-22 ERROR-Folder can not be created for time
+31-12-22 ERROR-Error in saving data for time folder and package: pyunit-time
+31-12-22 ERROR-Error in saving data for time folder and package: get-time
+31-12-22 ERROR-Error in saving data for time folder and package: time-converters
+31-12-22 ERROR-Error in saving data for time folder and package: pyunit-time
+31-12-22 ERROR-Error in saving data for time folder and package: get-time
+31-12-22 ERROR-Error in saving data for time folder and package: time-converters
+31-12-22 ERROR-Error in saving data for time folder and package: pyunit-time
+31-12-22 ERROR-Error in saving data for time folder and package: get-time
+31-12-22 ERROR-Error in saving data for time folder and package: time-converters
