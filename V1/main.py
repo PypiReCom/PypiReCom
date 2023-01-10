@@ -1,8 +1,5 @@
 from fastapi import FastAPI, BackgroundTasks
 from fastapi.responses import FileResponse
-import requests
-import csv
-import json
 from fuctions import *
 import yaml
 from yaml.loader import SafeLoader

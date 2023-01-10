@@ -29,3 +29,9 @@
 31-12-22 ERROR-Error in saving data for time folder and package: pyunit-time
 31-12-22 ERROR-Error in saving data for time folder and package: get-time
 31-12-22 ERROR-Error in saving data for time folder and package: time-converters
+05-01-23 ERROR-Error in saving data for pattern_finding folder and package: speckle-pattern
+05-01-23 ERROR-Error in saving data for pattern_finding folder and package: function-pattern-matching
+05-01-23 ERROR-Connection error
+05-01-23 ERROR-Folder can not be created for pattern_finding
+05-01-23 ERROR-Error in saving data for pattern_finding folder and package: speckle-pattern
+05-01-23 ERROR-Error in saving data for pattern_finding folder and package: function-pattern-matching
