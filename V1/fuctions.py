@@ -303,7 +303,7 @@ def generate_graph_wNX(Search_Context):
         return "Graph generated"
     except Exception as e:
         print(e)
-
+        
 
 
 def fetch_and_update_graph(Search_Context,credentials):
