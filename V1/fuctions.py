@@ -6,12 +6,15 @@ import nltk
 import pandas as pd
 import json
 from nltk.corpus import stopwords
+import networkx as nx
 # nltk.download('stopwords')
 import pyTigerGraph as tg
 from datetime import date
 from time import time
 import logging
 logging.basicConfig(filename='logs.txt', filemode='a', format='%(asctime)s %(levelname)s-%(message)s', datefmt='%d-%m-%y')
+
+
 
 def get_packages(link):
     '''
@@ -73,7 +76,7 @@ def create_directory(Search_Context):
     '''
     directory = '_'.join(Search_Context.split())
     # Parent Directory path
-    parent_dir = "C:/Users/anime/Documents/PypiReCom/Code/library/"
+    parent_dir = "C:/Users/anime/Documents/PypiReCom/V1/library/"
     # Defining the path as ../library/{directory}
     path = os.path.join(parent_dir, directory)
     # Creating the directory
@@ -85,7 +88,7 @@ def create_directory(Search_Context):
         return "Folder can not be created"
 
     # Creating the differnt csv(s)
-    base_directory = "library/"+'_'.join(Search_Context.split())
+    base_directory = "C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())
     try:
         with open(base_directory+"/Package_Basic_Data.csv","a", newline='') as file:
             csv_file = csv.writer(file)
@@ -113,7 +116,7 @@ def save_data(Search_Context,data):
     This function loads data in 3 csv(s) in the ../library/{Search_Context} and inserts the nessesary data in each csv.
     '''
     # Inserting Data into Different files
-    base_directory = "library/"+'_'.join(Search_Context.split())
+    base_directory = "C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())
     try:
         # Saving data to files
         package_name,package_author,package_author_email,package_license,package_dev_status,programming_lang,package_dependency = data
@@ -184,12 +187,13 @@ def connect_tigergraph(credentials):
         )
         auth_token = conn.getToken(credentials['gsqlSecret'])
         return conn,auth_token
-    except:
+    except Exception as e :
+        print(e)
         logging.error('Connection error')
 
 
 
-def generate_graph(Search_Context,credentials):     
+def generate_graph_wTG(Search_Context,credentials):     
     '''
     Generating the graph by extracting the data from the csv(s) generated and updating on Tiger Graoh
     
@@ -197,11 +201,11 @@ def generate_graph(Search_Context,credentials):
 
     Output: Json response of graph query.
     ''' 
-    base_directory = "library/"+'_'.join(Search_Context.split())
+    base_directory = "C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())
     try:
         # making connection
         conn,auth_token = connect_tigergraph(credentials)
-        
+
         # commenting these will permit the graph to evolve as more searches are involved
         # Deleting the current graph data
         conn.delVertices("Package")
@@ -253,8 +257,52 @@ def generate_graph(Search_Context,credentials):
             print("Error in graph generation")
             logging.error('Error in generating graph for ' + Search_Context)
             return "Error in graph generation"
-    except:
+    except Exception as e:
+        print(e)
         print("Connection error")
+
+
+
+def generate_graph_wNX(Search_Context):
+    base_directory = "C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())
+    try:
+        # Extracting data from Package_Basic_Data csv
+        df = csv_to_df(base_directory+"/Package_Basic_Data.csv")
+
+        G = nx.DiGraph()
+
+        # Adding data tupple in list for updation
+        for index in df.index:
+            G.add_edge(df["package_name"][index],df["package_dev_status"][index],label='curr_status')
+            G.add_edge(df["package_name"][index],df["package_license"][index],label='has_license')
+            nx.set_node_attributes(G,{df["package_name"][index] : {"author" : df["package_author"][index],
+                                                                "author_email" : df["package_author_email"][index],
+                                                                "dev_status" : df["package_dev_status"][index],
+                                                                "search_meta" : df["search_meta"][index],
+                                                                "color" : "red"},
+                                        df["package_dev_status"][index] : {"color" : "blue"},
+                                        df["package_license"][index] : {"color" : "green"}})
+ 
+        # Extracting data from Package_Prog_Lang csv
+        df = csv_to_df(base_directory+"/Package_Prog_Lang.csv")
+        # Adding data tupple in list for updation
+        for index in df.index:
+            G.add_edge(df["package_name"][index],df["language"][index],label='used_language')
+            nx.set_node_attributes(G,{df["language"][index] : {"color" : "pink"}})
+
+        # Extracting data from Package_Dependency csv
+        df = csv_to_df(base_directory+"/Package_Dependency.csv")
+        # Adding data tupple in list for updation
+        for index in df.index:
+            G.add_edge(df["package_name"][index],df["dependency_pkg"][index],label='has_dependency')
+            nx.set_node_attributes(G,{df["dependency_pkg"][index] : {"color" : "yellow"}})
+        
+        nx.write_gml(G, path="C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())+'/graph.gml')
+
+        print("Graph Generated")
+        return "Graph generated"
+    except Exception as e:
+        print(e)
 
 
 
@@ -293,16 +341,49 @@ def fetch_and_update_graph(Search_Context,credentials):
                 package_count = package_count + 1
             except:
                 print("Error in response")
-    
+    '''
     # 4. Graph Generation function
-    if generate_graph(Search_Context,credentials) == "Graph generated":
-        with open("library/index.csv","a",newline='') as file:
+    if generate_graph_wTG(Search_Context,credentials) == "Graph generated":
+        G = nx.DiGraph()
+        color = []
+        try:
+            # print("C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())+"/graph.json")
+            with open("C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())+"/graph.json","r") as graphfile:
+                result = json.load(graphfile)
+                for package_dependency in result['Package_Dependency']:
+                    G.add_node(package_dependency['package'], color='red')
+                    color.append('red')
+                    G.add_node(package_dependency['dependency'], color='blue')
+                    color.append('blue')
+                    G.add_edge(package_dependency['package'],package_dependency['dependency'],label='has_dependency')
+                    # graph.node(package_dependency['package'],shape='doublecircle')
+                    # graph.edge(package_dependency['package'],package_dependency['dependency'],label='has_dependency')
+                for package_license in result['Package_License']:
+                    G.add_node(package_license['license'], color='green')
+                    color.append('green')
+                    G.add_edge(package_license['package'],package_license['license'],label='has_license')
+                    # graph.edge(package_license['package'],package_license['license'],label='has_license')
+                for package_language in result['Package_Language']:
+                    G.add_node(package_language['programming_language'], color='pink')
+                    color.append("pink")
+                    G.add_edge(package_language['package'],package_language['programming_language'],label='used_language')
+                    # graph.edge(package_language['package'],package_language['programming_language'],label='used_language')
+            nx.write_gml(G, path="C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())+'/graph.gml')
+        except Exception as e:
+            print(e)
+            print("GML not generated")
+        with open("C:/Users/anime/Documents/PypiReCom/V1/library/index.csv","a",newline='') as file:
             csv_file = csv.writer(file)
             csv_file.writerow(['_'.join(Search_Context.split()),date.today(),package_count])
         print("Time taken: ",time()-init)
-    # Else delete directory.
+    '''
 
-
+    if generate_graph_wNX(Search_Context) == "Graph generated":
+        with open("C:/Users/anime/Documents/PypiReCom/V1/library/index.csv","a",newline='') as file:
+            csv_file = csv.writer(file)
+            csv_file.writerow(['_'.join(Search_Context.split()),date.today(),package_count])
+    
+    print("Time taken: ",time()-init)
 
 def graph(Search_Context):
     '''
@@ -314,9 +395,10 @@ def graph(Search_Context):
     '''
     try:
         # Creating the base address
-        base_directory = "library/"+'_'.join(Search_Context.split())
+        base_directory = "C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())
         # Seaching for the graph in the base address
         with open(base_directory+"/graph.json", "r") as graphfile:
             return json.load(graphfile) 
-    except:
+    except Exception as e:
+        print(e)
         return "Please check back later."

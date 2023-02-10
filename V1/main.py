@@ -7,10 +7,16 @@ from yaml.loader import SafeLoader
 app = FastAPI()
 
 @app.get('/get_graph_file')
-def get_file(Search_Text:str):
+def get_graph_file(Search_Text:str):
     Search_Text = Search_Text.lower()
     Search_Context = '_'.join(generate_context(Search_Text).split())
     return FileResponse(path='library/'+Search_Context+'/graph.json',filename=Search_Context+'_Graph.json')
+
+@app.get('/get_gml_file')
+def get_gml_file(Search_Text:str):
+    Search_Text = Search_Text.lower()
+    Search_Context = '_'.join(generate_context(Search_Text).split())
+    return FileResponse(path='library/'+Search_Context+'/graph.gml',filename=Search_Context+'_Graph.gml')
 
 @app.get('/get_seach_context_list')
 def fetch_search_context():     # Return the list of all the Search Context available in ../library/index.csv
@@ -37,7 +43,7 @@ def search_pypi(Search_Text: str, background_task:BackgroundTasks):
     # If data already exist
     # Fetching and sending back the json response
     try:
-        with open("library/index.csv","r") as file:
+        with open("C:/Users/anime/Documents/PypiReCom/V1/library/index.csv","r") as file:
             for context in file.read().split():
                 if '_'.join(Search_Context.split()) in context.split(','):
                     print("We already have the data.")

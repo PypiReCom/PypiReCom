@@ -44,8 +44,16 @@ def main():
                 graph.edge(package_license['package'],package_license['license'],label='has_license')
             for package_language in result['Package_Language']:
                 graph.edge(package_language['package'],package_language['programming_language'],label='used_language')
-            file = requests.get(api_endpoint + '/get_graph_file?Search_Text=' + search_text).content
-            st.download_button("Download Graph Json",data=file,file_name='Graph.json')
+            try:
+                json_file = requests.get(api_endpoint + '/get_graph_file?Search_Text=' + search_text).content
+                st.download_button("Download Graph Json",data=json_file,file_name=search_text+'_Graph.json')
+            except:
+                pass
+            try:
+                gml_file = requests.get(api_endpoint + '/get_gml_file?Search_Text=' + search_text).content
+                st.download_button("Download Graph GML",data=gml_file,file_name=search_text+'_Graph.gml')
+            except:
+                pass
             st.write(graph)
             # st.download_button("Download Graph Image",data=graph.render(format='png'))
             

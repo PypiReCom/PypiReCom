@@ -35,3 +35,70 @@
 05-01-23 ERROR-Folder can not be created for pattern_finding
 05-01-23 ERROR-Error in saving data for pattern_finding folder and package: speckle-pattern
 05-01-23 ERROR-Error in saving data for pattern_finding folder and package: function-pattern-matching
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Connection error
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Connection error
+05-02-23 ERROR-Error in saving data for spatial_analysis folder and package: random-spatial-py
+05-02-23 ERROR-Error in saving data for spatial_analysis folder and package: pyinterpolate
+05-02-23 ERROR-Connection error
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Connection error
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Connection error
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Connection error
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Connection error
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Connection error
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Connection error
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Connection error
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Connection error
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Connection error
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Error in creating file in spatial_analysis folder
+05-02-23 ERROR-Error in creating file in spatial_analysis folder
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Error in saving data for spatial_analysis folder and package: random-spatial-py
+05-02-23 ERROR-Error in saving data for spatial_analysis folder and package: pyinterpolate
+05-02-23 ERROR-Error in saving data for spatial_analysis folder and package: meme-analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Error in saving data for spatial_analysis folder and package: random-spatial-py
+05-02-23 ERROR-Error in saving data for spatial_analysis folder and package: pyinterpolate
+05-02-23 ERROR-Error in saving data for spatial_analysis folder and package: meme-analysis
+05-02-23 ERROR-Connection error
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Connection error
+05-02-23 ERROR-Error in saving data for spatial_analysis folder and package: random-spatial-py
+05-02-23 ERROR-Error in saving data for spatial_analysis folder and package: pyinterpolate
+05-02-23 ERROR-Error in saving data for spatial_analysis folder and package: meme-analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+05-02-23 ERROR-Folder can not be created for spatial_analysis
+06-02-23 ERROR-Error in saving data for graph_neural_network folder and package: tada0-toddler-neural-network
+06-02-23 ERROR-Error in saving data for ploting folder and package: kydavra
+06-02-23 ERROR-Error in saving data for spatial_analysis folder and package: random-spatial-py
+06-02-23 ERROR-Error in saving data for spatial_analysis folder and package: pyinterpolate
+06-02-23 ERROR-Error in saving data for spatial_analysis folder and package: meme-analysis
+08-02-23 ERROR-Error in saving data for frontend folder and package: Twitter-Frontend-API
