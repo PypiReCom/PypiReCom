@@ -193,7 +193,7 @@ def connect_tigergraph(credentials):
 
 
 
-def generate_graph_wTG(Search_Context,credentials):     
+def generate_graph_wTG(Search_Context,credentials):
     '''
     Generating the graph by extracting the data from the csv(s) generated and updating on Tiger Graoh
     
@@ -279,28 +279,29 @@ def generate_graph_wNX(Search_Context):
                                                                 "author_email" : df["package_author_email"][index],
                                                                 "dev_status" : df["package_dev_status"][index],
                                                                 "search_meta" : df["search_meta"][index],
-                                                                "color" : "red"},
-                                        df["package_dev_status"][index] : {"color" : "blue"},
-                                        df["package_license"][index] : {"color" : "green"}})
+                                                                "vertex_type" : "Package"},
+                                        df["package_dev_status"][index] : {"vertex_type" : "Development Status"},
+                                        df["package_license"][index] : {"vertex_type" : "License"}})
  
         # Extracting data from Package_Prog_Lang csv
         df = csv_to_df(base_directory+"/Package_Prog_Lang.csv")
         # Adding data tupple in list for updation
         for index in df.index:
             G.add_edge(df["package_name"][index],df["language"][index],label='used_language')
-            nx.set_node_attributes(G,{df["language"][index] : {"color" : "pink"}})
+            nx.set_node_attributes(G,{df["language"][index] : {"vertex_type" : "Programming Language"}})
 
         # Extracting data from Package_Dependency csv
         df = csv_to_df(base_directory+"/Package_Dependency.csv")
         # Adding data tupple in list for updation
         for index in df.index:
             G.add_edge(df["package_name"][index],df["dependency_pkg"][index],label='has_dependency')
-            nx.set_node_attributes(G,{df["dependency_pkg"][index] : {"color" : "yellow"}})
+            nx.set_node_attributes(G,{df["dependency_pkg"][index] : {"vertex_type" : "Dependency Package"}})
         
         nx.write_gml(G, path="C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())+'/graph.gml')
 
         print("Graph & GML generated")
         return "Graph & GML generated"
+    #json response
     except Exception as e:
         print(e)
 
@@ -371,6 +372,7 @@ def fetch_and_update_graph(Search_Context,credentials):
     
     # 2. creating directory
     if create_directory(Search_Context) == "Folder created":
+        # check for status
         # 3. Getting data of each package in the package list
         for package in packages:
             # Package data in Json format
@@ -394,7 +396,7 @@ def fetch_and_update_graph(Search_Context,credentials):
             update_index(Search_Context, package_count)
     
     else:
-        logging.error('Credential error - incorrect graph_db')
+        logging.error('Credential error - graph_db not configured')
         return "Credential error - incorrect graph_db"
     
     print("Time taken: ",time()-init)

@@ -106,3 +106,4 @@
 11-02-23 ERROR-Folder can not be created for plotly
 11-02-23 ERROR-Folder can not be created for plotly
 11-02-23 ERROR-Folder can not be created for plotly
+11-02-23 ERROR-Connection error
