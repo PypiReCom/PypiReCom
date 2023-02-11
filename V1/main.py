@@ -38,7 +38,7 @@ def search_pypi(Search_Text: str, background_task:BackgroundTasks):
     # Generating search context
     Search_Text = Search_Text.lower()
     Search_Context = generate_context(Search_Text)
-    credentials = yaml.load(open('TigerGraph_SecretKey.yml'),Loader=SafeLoader)
+    credentials = yaml.load(open('Graph_Config.yml'),Loader=SafeLoader)
 
     # If data already exist
     # Fetching and sending back the json response
