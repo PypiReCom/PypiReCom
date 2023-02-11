@@ -385,11 +385,11 @@ def fetch_and_update_graph(Search_Context,credentials):
                 print("Error in response")
     
     # 4. Graph Generation function
-    if  credentials['graph_db']=="TigerGraph":
+    if  credentials['graph_db'] == "TigerGraph":
         if generate_graph_wTG(Search_Context,credentials) == "Graph generated" and json_to_gml(Search_Context) == "GML generated":
             update_index(Search_Context, package_count)
         
-    elif credentials["graph_db"]=="NetworkX":
+    elif credentials["graph_db"] == "NetworkX":
         if generate_graph_wNX(Search_Context) == "Graph & GML generated":
             update_index(Search_Context, package_count)
     
