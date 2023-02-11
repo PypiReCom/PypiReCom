@@ -181,11 +181,11 @@ def csv_to_df(directory):
 def connect_tigergraph(credentials):
     try:
         conn = tg.TigerGraphConnection(
-            host = credentials['host'],
-            graphname = credentials['graphname'],
-            gsqlSecret = credentials['gsqlSecret']
+            host = credentials['graph_url'],
+            graphname = credentials['graph_name'],
+            gsqlSecret = credentials['secret_key']
         )
-        auth_token = conn.getToken(credentials['gsqlSecret'])
+        auth_token = conn.getToken(credentials['secret_key'])
         return conn,auth_token
     except Exception as e :
         print(e)
@@ -299,11 +299,52 @@ def generate_graph_wNX(Search_Context):
         
         nx.write_gml(G, path="C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())+'/graph.gml')
 
-        print("Graph Generated")
-        return "Graph generated"
+        print("Graph & GML generated")
+        return "Graph & GML generated"
     except Exception as e:
         print(e)
-        
+
+
+
+def json_to_gml(Search_Context):
+    G = nx.DiGraph()
+    color = []
+    try:
+        # print("C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())+"/graph.json")
+        with open("C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())+"/graph.json","r") as graphfile:
+            result = json.load(graphfile)
+            for package_dependency in result['Package_Dependency']:
+                G.add_node(package_dependency['package'], color='red')
+                color.append('red')
+                G.add_node(package_dependency['dependency'], color='blue')
+                color.append('blue')
+                G.add_edge(package_dependency['package'],package_dependency['dependency'],label='has_dependency')
+                # graph.node(package_dependency['package'],shape='doublecircle')
+                # graph.edge(package_dependency['package'],package_dependency['dependency'],label='has_dependency')
+            for package_license in result['Package_License']:
+                G.add_node(package_license['license'], color='green')
+                color.append('green')
+                G.add_edge(package_license['package'],package_license['license'],label='has_license')
+                # graph.edge(package_license['package'],package_license['license'],label='has_license')
+            for package_language in result['Package_Language']:
+                G.add_node(package_language['programming_language'], color='pink')
+                color.append("pink")
+                G.add_edge(package_language['package'],package_language['programming_language'],label='used_language')
+                # graph.edge(package_language['package'],package_language['programming_language'],label='used_language')
+        nx.write_gml(G, path="C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())+'/graph.gml')
+        return "GML generated"
+    except Exception as e:
+        print(e)
+        return ("GML not generated")
+
+
+
+def update_index(Search_Context, package_count):
+    with open("C:/Users/anime/Documents/PypiReCom/V1/library/index.csv","a",newline='') as file:
+        csv_file = csv.writer(file)
+        csv_file.writerow(['_'.join(Search_Context.split()),date.today(),package_count])
+    print("Index updated")
+
 
 
 def fetch_and_update_graph(Search_Context,credentials):
@@ -327,6 +368,7 @@ def fetch_and_update_graph(Search_Context,credentials):
         packages += get_packages('https://pypi.org/search/?q=' + '+'.join(Search_Context.split()) + '&page=' + str(page))
 
     package_count = 0
+    
     # 2. creating directory
     if create_directory(Search_Context) == "Folder created":
         # 3. Getting data of each package in the package list
@@ -341,49 +383,23 @@ def fetch_and_update_graph(Search_Context,credentials):
                 package_count = package_count + 1
             except:
                 print("Error in response")
-    '''
+    
     # 4. Graph Generation function
-    if generate_graph_wTG(Search_Context,credentials) == "Graph generated":
-        G = nx.DiGraph()
-        color = []
-        try:
-            # print("C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())+"/graph.json")
-            with open("C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())+"/graph.json","r") as graphfile:
-                result = json.load(graphfile)
-                for package_dependency in result['Package_Dependency']:
-                    G.add_node(package_dependency['package'], color='red')
-                    color.append('red')
-                    G.add_node(package_dependency['dependency'], color='blue')
-                    color.append('blue')
-                    G.add_edge(package_dependency['package'],package_dependency['dependency'],label='has_dependency')
-                    # graph.node(package_dependency['package'],shape='doublecircle')
-                    # graph.edge(package_dependency['package'],package_dependency['dependency'],label='has_dependency')
-                for package_license in result['Package_License']:
-                    G.add_node(package_license['license'], color='green')
-                    color.append('green')
-                    G.add_edge(package_license['package'],package_license['license'],label='has_license')
-                    # graph.edge(package_license['package'],package_license['license'],label='has_license')
-                for package_language in result['Package_Language']:
-                    G.add_node(package_language['programming_language'], color='pink')
-                    color.append("pink")
-                    G.add_edge(package_language['package'],package_language['programming_language'],label='used_language')
-                    # graph.edge(package_language['package'],package_language['programming_language'],label='used_language')
-            nx.write_gml(G, path="C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())+'/graph.gml')
-        except Exception as e:
-            print(e)
-            print("GML not generated")
-        with open("C:/Users/anime/Documents/PypiReCom/V1/library/index.csv","a",newline='') as file:
-            csv_file = csv.writer(file)
-            csv_file.writerow(['_'.join(Search_Context.split()),date.today(),package_count])
-        print("Time taken: ",time()-init)
-    '''
-
-    if generate_graph_wNX(Search_Context) == "Graph generated":
-        with open("C:/Users/anime/Documents/PypiReCom/V1/library/index.csv","a",newline='') as file:
-            csv_file = csv.writer(file)
-            csv_file.writerow(['_'.join(Search_Context.split()),date.today(),package_count])
+    if  credentials['graph_db']=="TigerGraph":
+        if generate_graph_wTG(Search_Context,credentials) == "Graph generated" and json_to_gml(Search_Context) == "GML generated":
+            update_index(Search_Context, package_count)
+        
+    elif credentials["graph_db"]=="NetworkX":
+        if generate_graph_wNX(Search_Context) == "Graph & GML generated":
+            update_index(Search_Context, package_count)
+    
+    else:
+        logging.error('Credential error - incorrect graph_db')
+        return "Credential error - incorrect graph_db"
     
     print("Time taken: ",time()-init)
+
+
 
 def graph(Search_Context):
     '''

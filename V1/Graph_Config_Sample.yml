@@ -1,0 +1,8 @@
+'''
+Select graph_db as either TigerGraph or NetworkX 
+If graph_db is NetworkX leave rest fields blank.
+'''
+graph_db: TigerGraph/NetworkX
+graph_url: domain
+graph_name: graph name
+secret_key: secret key

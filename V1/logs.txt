@@ -102,3 +102,7 @@
 06-02-23 ERROR-Error in saving data for spatial_analysis folder and package: pyinterpolate
 06-02-23 ERROR-Error in saving data for spatial_analysis folder and package: meme-analysis
 08-02-23 ERROR-Error in saving data for frontend folder and package: Twitter-Frontend-API
+11-02-23 ERROR-Folder can not be created for plotly
+11-02-23 ERROR-Folder can not be created for plotly
+11-02-23 ERROR-Folder can not be created for plotly
+11-02-23 ERROR-Folder can not be created for plotly
