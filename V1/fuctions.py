@@ -12,6 +12,7 @@ import pyTigerGraph as tg
 from datetime import date
 from time import time
 import logging
+from backend_config import *
 logging.basicConfig(filename='logs.txt', filemode='a', format='%(asctime)s %(levelname)s-%(message)s', datefmt='%d-%m-%y')
 
 
@@ -75,20 +76,20 @@ def create_directory(Search_Context):
     Then, creates 3 csv(s) in the folder adding the name of attributes/columns in each csv
     '''
     directory = '_'.join(Search_Context.split())
-    # Parent Directory path
-    parent_dir = "C:/Users/anime/Documents/PypiReCom/V1/library/"
-    # Defining the path as ../library/{directory}
+
+    # Defining the path as .../library/{directory}
     path = os.path.join(parent_dir, directory)
+
     # Creating the directory
     try:
         os.mkdir(path)
-    except:
+    except Exception as e:
         print("Folder can not be created.")
-        logging.error('Folder can not be created for ' + '_'.join(Search_Context.split()))
-        return "Folder can not be created"
+        logging.error('Folder can not be created for ' + '_'.join(Search_Context.split()) + 'Exception: ' + e)
+        return {"Status Code" : Status_Code["Success"], "Description" : "Folder can not be created"}
 
     # Creating the differnt csv(s)
-    base_directory = "C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())
+    base_directory = parent_dir+'_'.join(Search_Context.split())
     try:
         with open(base_directory+"/Package_Basic_Data.csv","a", newline='') as file:
             csv_file = csv.writer(file)
@@ -102,9 +103,9 @@ def create_directory(Search_Context):
     except:
         print('Error in creating file.')
         logging.error('Error in creating file in ' + '_'.join(Search_Context.split()) + ' folder')
-        return "Error in file creation"
+        return {"Status Code" : Status_Code["Fail"], "Description" : "Error in file creation"}
     
-    return "Folder created"
+    return {"Status Code" : Status_Code["Success"] , "Description" : "Folder & files created", "Path" : base_directory}
 
 
 
@@ -116,7 +117,7 @@ def save_data(Search_Context,data):
     This function loads data in 3 csv(s) in the ../library/{Search_Context} and inserts the nessesary data in each csv.
     '''
     # Inserting Data into Different files
-    base_directory = "C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())
+    base_directory = parent_dir+'_'.join(Search_Context.split())
     try:
         # Saving data to files
         package_name,package_author,package_author_email,package_license,package_dev_status,programming_lang,package_dependency = data
@@ -189,7 +190,7 @@ def connect_tigergraph(credentials):
         return conn,auth_token
     except Exception as e :
         print(e)
-        logging.error('Connection error')
+        logging.error(f'connect_tigergraph function - Exception: {e}')
 
 
 
@@ -201,7 +202,7 @@ def generate_graph_wTG(Search_Context,credentials):
 
     Output: Json response of graph query.
     ''' 
-    base_directory = "C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())
+    base_directory = parent_dir + '_'.join(Search_Context.split())
     try:
         # making connection
         conn,auth_token = connect_tigergraph(credentials)
@@ -252,19 +253,20 @@ def generate_graph_wTG(Search_Context,credentials):
             graph = conn.runInstalledQuery("Stable_Package_Graph_wData")
             with open(base_directory+"/graph.json", "w") as graphfile:
                 json.dump(graph[0], graphfile)
-            return "Graph generated"
+            return {"Status Code" : Status_Code["Success"] , "Description" : "Graph generated"}
         else:
             print("Error in graph generation")
             logging.error('Error in generating graph for ' + Search_Context)
-            return "Error in graph generation"
+            return {"Status Code" : Status_Code["Fail"] , "Description" : "Error in graph generation"}
     except Exception as e:
         print(e)
         print("Connection error")
+        logging.error(f'generate_graph_wTG function - Exception: {e}')
 
 
 
 def generate_graph_wNX(Search_Context):
-    base_directory = "C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())
+    base_directory = parent_dir+'_'.join(Search_Context.split())
     try:
         # Extracting data from Package_Basic_Data csv
         df = csv_to_df(base_directory+"/Package_Basic_Data.csv")
@@ -297,51 +299,40 @@ def generate_graph_wNX(Search_Context):
             G.add_edge(df["package_name"][index],df["dependency_pkg"][index],label='has_dependency')
             nx.set_node_attributes(G,{df["dependency_pkg"][index] : {"vertex_type" : "Dependency Package"}})
         
-        nx.write_gml(G, path="C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())+'/graph.gml')
+        nx.write_gml(G, path = parent_dir + '_'.join(Search_Context.split()) + '/graph.gml')
 
         print("Graph & GML generated")
-        return "Graph & GML generated"
+        return {"Status Code" : Status_Code["Success"] , "Description" : "Graph & GML generated"}
     #json response
     except Exception as e:
         print(e)
+        logging.error(f'generate_graph_wNX function - Exception: {e}')
+        return {"Status Code" : Status_Code["Fail"] ,"Description" : "Graph or GML not generated"}
 
 
 
 def json_to_gml(Search_Context):
     G = nx.DiGraph()
-    color = []
     try:
-        # print("C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())+"/graph.json")
-        with open("C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())+"/graph.json","r") as graphfile:
+        with open(parent_dir+'_'.join(Search_Context.split())+"/graph.json","r") as graphfile:
             result = json.load(graphfile)
             for package_dependency in result['Package_Dependency']:
-                G.add_node(package_dependency['package'], color='red')
-                color.append('red')
-                G.add_node(package_dependency['dependency'], color='blue')
-                color.append('blue')
                 G.add_edge(package_dependency['package'],package_dependency['dependency'],label='has_dependency')
-                # graph.node(package_dependency['package'],shape='doublecircle')
-                # graph.edge(package_dependency['package'],package_dependency['dependency'],label='has_dependency')
             for package_license in result['Package_License']:
-                G.add_node(package_license['license'], color='green')
-                color.append('green')
                 G.add_edge(package_license['package'],package_license['license'],label='has_license')
-                # graph.edge(package_license['package'],package_license['license'],label='has_license')
             for package_language in result['Package_Language']:
-                G.add_node(package_language['programming_language'], color='pink')
-                color.append("pink")
                 G.add_edge(package_language['package'],package_language['programming_language'],label='used_language')
-                # graph.edge(package_language['package'],package_language['programming_language'],label='used_language')
-        nx.write_gml(G, path="C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())+'/graph.gml')
-        return "GML generated"
+        nx.write_gml(G, path = parent_dir + '_'.join(Search_Context.split()) + '/graph.gml')
+        return {"Status Code" : Status_Code["Success"] , "Description" : "GML generated"}
     except Exception as e:
         print(e)
-        return ("GML not generated")
+        logging.error(f'json_to_gml function - Exception: {e}')
+        return {"Status Code" : Status_Code["Fail"] ,"Description" : "GML not generated"}
 
 
 
 def update_index(Search_Context, package_count):
-    with open("C:/Users/anime/Documents/PypiReCom/V1/library/index.csv","a",newline='') as file:
+    with open(parent_dir+"index.csv","a",newline='') as file:
         csv_file = csv.writer(file)
         csv_file.writerow(['_'.join(Search_Context.split()),date.today(),package_count])
     print("Index updated")
@@ -365,40 +356,42 @@ def fetch_and_update_graph(Search_Context,credentials):
     # Data scrapping required for getting list of packages
     packages = []
     # Taking 100 Packages from the first 5 pages
-    for page in range(1,6):
-        packages += get_packages('https://pypi.org/search/?q=' + '+'.join(Search_Context.split()) + '&page=' + str(page))
+    for page in range(1, search_page_range + 1):
+        packages += get_packages(pypi_search_url + '?q=' + '+'.join(Search_Context.split()) + '&page=' + str(search_page_range))
 
     package_count = 0
     
     # 2. creating directory
-    if create_directory(Search_Context) == "Folder created":
+    if create_directory(Search_Context)['Status Code'] == 200:
         # check for status
         # 3. Getting data of each package in the package list
         for package in packages:
             # Package data in Json format
             try:
-                response = (requests.get('https://pypi.python.org/pypi/'+package+'/json')).json()
+                response = (requests.get(pypi_package_data_url + package + '/json')).json()
                 # Picking nesseary data form Json file
                 data = fetch_data(response)
                 # Saving data in library
                 save_data(Search_Context,data)
                 package_count = package_count + 1
-            except:
+            except Exception as e:
+                logging.error(f'Response object - Exception: {e}')
                 print("Error in response")
     
     # 4. Graph Generation function
     if  credentials['graph_db'] == "TigerGraph":
-        if generate_graph_wTG(Search_Context,credentials) == "Graph generated" and json_to_gml(Search_Context) == "GML generated":
-            update_index(Search_Context, package_count)
+        if generate_graph_wTG(Search_Context,credentials)['Status Code'] == 200:
+            if json_to_gml(Search_Context)['Status Code'] == 200:
+                update_index(Search_Context, package_count)
         
     elif credentials["graph_db"] == "NetworkX":
-        if generate_graph_wNX(Search_Context) == "Graph & GML generated":
+        if generate_graph_wNX(Search_Context)['Status Code'] == 200:
             update_index(Search_Context, package_count)
     
     else:
         logging.error('Credential error - graph_db not configured')
-        return "Credential error - incorrect graph_db"
-    
+        return {"Status Code" : Status_Code["Fail"] , "Description" : "Credential error - incorrect graph_db"}
+
     print("Time taken: ",time()-init)
 
 
@@ -413,10 +406,11 @@ def graph(Search_Context):
     '''
     try:
         # Creating the base address
-        base_directory = "C:/Users/anime/Documents/PypiReCom/V1/library/"+'_'.join(Search_Context.split())
+        base_directory = parent_dir+'_'.join(Search_Context.split())
         # Seaching for the graph in the base address
-        with open(base_directory+"/graph.json", "r") as graphfile:
+        with open(base_directory + "/graph.json", "r") as graphfile:
             return json.load(graphfile) 
     except Exception as e:
         print(e)
+        logging.error(f'Graph function - Exception: {e}')
         return "Please check back later."
