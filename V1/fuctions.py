@@ -301,8 +301,8 @@ def generate_graph_wNX(Search_Context):
         
         nx.write_gml(G, path = parent_dir + '_'.join(Search_Context.split()) + '/graph.gml')
 
-        print("Graph & GML generated")
-        return {"Status Code" : Status_Code["Success"] , "Description" : "Graph & GML generated"}
+        print("GML generated")
+        return {"Status Code" : Status_Code["Success"] , "Description" : "GML generated"}
     #json response
     except Exception as e:
         print(e)
