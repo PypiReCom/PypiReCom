@@ -357,8 +357,8 @@ def fetch_and_update_graph(Search_Context,credentials):
     packages = []
     # Taking 100 Packages from the first 5 pages
     for page in range(1, search_page_range + 1):
-        packages += get_packages(pypi_search_url + '?q=' + '+'.join(Search_Context.split()) + '&page=' + str(search_page_range))
-
+        packages += get_packages(pypi_search_url + '?q=' + '+'.join(Search_Context.split()) + '&page=' + str(page))
+    packages = [*set(packages)]
     package_count = 0
     
     # 2. creating directory
