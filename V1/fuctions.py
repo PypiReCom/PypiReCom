@@ -196,7 +196,7 @@ def connect_tigergraph(credentials):
 
 def generate_graph_wTG(Search_Context,credentials):
     '''
-    Generating the graph by extracting the data from the csv(s) generated and updating on Tiger Graoh
+    Generating the graph by extracting the data from the csv(s) generated and updating on Tiger Graph
     
     Input: Space seperaetd keywords to be searched -> Search_Context (In address or any operation _ is used to join the Search_Context)
 
@@ -266,6 +266,13 @@ def generate_graph_wTG(Search_Context,credentials):
 
 
 def generate_graph_wNX(Search_Context):
+    '''
+    Generating the graph by extracting the data from the csv(s) generated and updating on NetworkX
+    
+    Input: Space seperaetd keywords to be searched -> Search_Context (In address or any operation _ is used to join the Search_Context)
+
+    Output: GML of the graph
+    ''' 
     base_directory = parent_dir+'_'.join(Search_Context.split())
     try:
         # Extracting data from Package_Basic_Data csv
@@ -312,6 +319,13 @@ def generate_graph_wNX(Search_Context):
 
 
 def json_to_gml(Search_Context):
+    '''
+    Converts json to GML by using loading it to NetworkX
+    
+    Input: Space seperaetd keywords to be searched -> Search_Context (In address or any operation _ is used to join the Search_Context)
+
+    Output: GML file created from JSON
+    ''' 
     G = nx.DiGraph()
     try:
         with open(parent_dir+'_'.join(Search_Context.split())+"/graph.json","r") as graphfile:
@@ -332,6 +346,9 @@ def json_to_gml(Search_Context):
 
 
 def update_index(Search_Context, package_count):
+    '''
+    Updates the index whenever GML and JSON successfully generated. 
+    '''
     with open(parent_dir+"index.csv","a",newline='') as file:
         csv_file = csv.writer(file)
         csv_file.writerow(['_'.join(Search_Context.split()),date.today(),package_count])
