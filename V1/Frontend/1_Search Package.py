@@ -69,8 +69,8 @@ def footer():
     myargs = [
         """
         <p>
-        Made with ❤️ by          
-        Dr. Shyam Sundaram[<a href="https://www.linkedin.com/in/bioenable" target="_blank">Git LinkedIn Logo</a>],
+        Made with ❤️ by 
+        <a href="https://www.linkedin.com/in/bioenable" target="_blank">Dr. Shyam Sundaram</a>,
         <a href="https://www.linkedin.com/in/animesh2210" target="_blank">Animesh Verma</a> &
         <a href="https://www.linkedin.com/in/avs-sridhar-8b9904176/" target="_blank">Sridhar Aluru</a>
         </p>

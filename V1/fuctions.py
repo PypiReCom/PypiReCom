@@ -85,8 +85,8 @@ def create_directory(Search_Context):
         os.mkdir(path)
     except Exception as e:
         print("Folder can not be created.")
-        logging.error('Folder can not be created for ' + '_'.join(Search_Context.split()) + 'Exception: ' + e)
-        return {"Status Code" : Status_Code["Success"], "Description" : "Folder can not be created"}
+        logging.error('Folder can not be created for ' + '_'.join(Search_Context.split()) + 'Exception: ' + str(e))
+        return {"Status Code" : Status_Code["Fail"], "Description" : "Folder can not be created"}
 
     # Creating the differnt csv(s)
     base_directory = parent_dir+'_'.join(Search_Context.split())
@@ -356,6 +356,43 @@ def update_index(Search_Context, package_count):
 
 
 
+def gml_to_json(Search_Context):
+    base_directory = parent_dir + '_'.join(Search_Context.split())
+    try:
+        G = nx.read_gml(base_directory+'/graph.gml')
+        H = json.dumps(G, default=nx.node_link_data)
+        # print(H)
+        results = []
+        for node in json.loads(H)['nodes']:
+            package_data = {}
+            if node['vertex_type'] == 'Package':
+                package_data['v_id'] = node['id']
+                package_data['v_type'] = node['vertex_type']
+                package_data['attributes'] = {"author" : node['author'],
+                                            "author_email" : node['author_email'],
+                                            "dev_status" : node['dev_status'],
+                                            "search_meta" : node['search_meta']}
+                results.append(package_data)
+        # print(json.loads(H)['links'])
+        package_dependency = []
+        package_license = []
+        package_language = []
+        for edge in json.loads(H)['links']:
+            if edge['label'] == 'has_dependency':
+                package_dependency.append({"package": edge['source'], "dependency": edge['target']})
+            if edge['label'] == 'has_license':
+                package_license.append({"package": edge['source'], "license": edge['target']})
+            if edge['label'] == 'used_language':
+                package_language.append({"package": edge['source'], "programming_language": edge['target']})
+
+        with open(base_directory+"/graph.json", "w") as graphfile:
+            json.dump({'result':results,'Package_Dependency':package_dependency,'Package_License':package_license,'Package_Language':package_language}, graphfile)
+        
+        return {"Status Code" : Status_Code["Success"] ,"Description" : "Json generated"}
+    except Exception as e:
+        logging.error(f'gml_to_json function - Exception: {e}')
+        return {"Status Code" : Status_Code["Fail"] ,"Description" : "Json not generated"}
+
 def fetch_and_update_graph(Search_Context,credentials):
     '''
     Input parameter: Space seperaetd keywords to be searched -> Search_Context (In address or any operation _ is used to join the Search_Context)
@@ -395,19 +432,20 @@ def fetch_and_update_graph(Search_Context,credentials):
                 logging.error(f'Response object - Exception: {e}')
                 print("Error in response")
     
-    # 4. Graph Generation function
-    if  credentials['graph_db'] == "TigerGraph":
-        if generate_graph_wTG(Search_Context,credentials)['Status Code'] == 200:
-            if json_to_gml(Search_Context)['Status Code'] == 200:
-                update_index(Search_Context, package_count)
+        # 4. Graph Generation function
+        if  credentials['graph_db'] == "TigerGraph":
+            if generate_graph_wTG(Search_Context,credentials)['Status Code'] == 200:
+                if json_to_gml(Search_Context)['Status Code'] == 200:
+                    update_index(Search_Context, package_count)
+            
+        elif credentials["graph_db"] == "NetworkX":
+            if generate_graph_wNX(Search_Context)['Status Code'] == 200:
+                if gml_to_json(Search_Context)['Status Code'] == 200:
+                    update_index(Search_Context, package_count)
         
-    elif credentials["graph_db"] == "NetworkX":
-        if generate_graph_wNX(Search_Context)['Status Code'] == 200:
-            update_index(Search_Context, package_count)
-    
-    else:
-        logging.error('Credential error - graph_db not configured')
-        return {"Status Code" : Status_Code["Fail"] , "Description" : "Credential error - incorrect graph_db"}
+        else:
+            logging.error('Credential error - graph_db not configured')
+            return {"Status Code" : Status_Code["Fail"] , "Description" : "Credential error - incorrect graph_db"}
 
     print("Time taken: ",time()-init)
 
