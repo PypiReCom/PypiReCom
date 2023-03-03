@@ -1,0 +1,9 @@
+CREATE QUERY Stable_Package_Graph_wData(/* Parameters here */) FOR GRAPH PypiReCom { 
+  /* Write query logic here */ 
+  #PRINT "Stable_Package_Graph_wData works!"; 
+  result = SELECT p from Package:p WHERE p.dev_status LIKE "5%";
+  Select package, dependency into Package_Dependency from result:package-(has_dependency)-Dependency_Package:dependency; 
+  Select package, license into Package_License from result:package-(has_license)-License:license;
+  SELECT package, programming_language into Package_Language from result:package-(used_language)-Programming_Lang:programming_language; 
+  PRINT result,Package_Dependency,Package_License,Package_Language;
+}
