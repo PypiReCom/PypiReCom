@@ -1,6 +1,5 @@
 bs4 
 requests
-os
 nltk
 pandas
 json
