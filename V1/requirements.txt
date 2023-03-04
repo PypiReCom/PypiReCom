@@ -6,7 +6,6 @@ nltk
 networkx
 pyTigerGraph
 datetime
-time
 logging
 fastapi
 yaml
