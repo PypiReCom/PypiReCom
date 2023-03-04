@@ -2,7 +2,6 @@ bs4
 requests
 nltk
 pandas
-json
 nltk
 networkx
 pyTigerGraph
