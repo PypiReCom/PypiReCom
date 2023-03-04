@@ -7,4 +7,3 @@ networkx
 pyTigerGraph
 datetime
 fastapi
-yaml
