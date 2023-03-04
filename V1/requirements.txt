@@ -7,3 +7,4 @@ networkx
 pyTigerGraph
 datetime
 fastapi
+uvicorn
