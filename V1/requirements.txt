@@ -1,14 +1,10 @@
 bs4 
 requests
-os
 nltk
 pandas
-json
 nltk
 networkx
 pyTigerGraph
 datetime
-time
-logging
 fastapi
-yaml
+uvicorn
