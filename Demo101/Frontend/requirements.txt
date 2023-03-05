@@ -1,0 +1,4 @@
+graphviz==0.20.1
+requests==2.27.1
+streamlit==1.16.0
+streamlit_extras==0.2.4

@@ -1,0 +1,13 @@
+bs4 
+requests
+nltk
+pandas
+json
+nltk
+networkx
+pyTigerGraph
+datetime
+time
+logging
+fastapi
+yaml
