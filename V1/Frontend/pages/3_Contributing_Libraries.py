@@ -78,7 +78,7 @@ def footer():
 
 def main():
     footer()
-    st.image(Image.open('PypiReCom Logo.png'),width=300)
+    st.image(Image.open('PypiReCom_Logo.png'),width=300)
     st.subheader("Credits:")
     
     col1,col2,col3 = st.columns([1,1,1])

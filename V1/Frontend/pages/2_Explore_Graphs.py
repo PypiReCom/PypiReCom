@@ -81,7 +81,7 @@ def footer():
 def main():
     # st.title("PypiReCom")
     footer()
-    st.image(Image.open('PypiReCom Logo.png'),width=300)
+    st.image(Image.open('PypiReCom_Logo.png'),width=300)
     st.subheader("Package data ready for you!")
     # with st.sidebar:
     #     st.header('Contributers')
