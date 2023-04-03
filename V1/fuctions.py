@@ -249,11 +249,16 @@ def generate_graph_wTG(Search_Context,credentials):
                 and conn.upsertEdges("Package","has_license","License",edge_2) and conn.upsertEdges("Package","used_language","Programming_Lang",edge_3)
                 and conn.upsertEdges("Package","has_dependency","Dependency_Package",edge_4))
         if result:
-            print("Graph Generated for "+Search_Context)
-            graph = conn.runInstalledQuery("Stable_Package_Graph_wData")
-            with open(base_directory+"/graph.json", "w") as graphfile:
-                json.dump(graph[0], graphfile)
-            return {"Status Code" : Status_Code["Success"] , "Description" : "Graph generated"}
+            try:
+                print("Graph Generated for "+Search_Context)
+                # graph = conn.runInstalledQuery("Stable_Package_Graph_wData")
+                graph = conn.runInstalledQuery("Package_Data",params = {"Status":"4%"})
+                with open(base_directory+"/graph.json", "w") as graphfile:
+                    json.dump(graph[0], graphfile)
+                return {"Status Code" : Status_Code["Success"] , "Description" : "Graph generated"}
+            except Exception as e:
+                print(e)
+                return {"Status Code" : Status_Code["Fail"] , "Description" : "Error in graph generation"}
         else:
             print("Error in graph generation")
             logging.error('Error in generating graph for ' + Search_Context)
