@@ -6,6 +6,7 @@ from PIL import Image
 from htbuilder import HtmlElement, div, ul, li, br, hr, a, p, img, styles, classes, fonts
 from htbuilder.units import percent, px
 from htbuilder.funcs import rgba, rgb
+import os
 
 st.set_page_config(
     page_title="PypiReCom"
@@ -96,7 +97,8 @@ def main():
     #     - [LinkedIn](https://www.linkedin.com/in/animesh2210)
     #     - [Github](https://github.com/Animesh2210)
     #     """)
-    st.image(Image.open('PypiReCom Logo.png'),width=300)
+    image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "PypiReCom Logo.png")    
+    st.image(Image.open(image_path),width=300)
     st.subheader("Get the perfect python package for you!")
     with st.form(key='Search_Package_Form'):
         nav1,nav2 = st.columns([5,1])
