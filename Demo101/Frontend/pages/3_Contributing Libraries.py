@@ -4,6 +4,7 @@ from PIL import Image
 from htbuilder import HtmlElement, div, ul, li, br, hr, a, p, img, styles, classes, fonts
 from htbuilder.units import percent, px
 from htbuilder.funcs import rgba, rgb
+from constants import *
 
 
 st.set_page_config(
@@ -78,7 +79,7 @@ def footer():
 
 def main():
     footer()
-    st.image(Image.open('PypiReCom Logo.png'),width=300)
+    st.image(Image.open(logo_path),width=300)
     st.subheader("Credits:")
     
     col1,col2,col3 = st.columns([1,1,1])

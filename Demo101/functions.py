@@ -2,10 +2,10 @@ from bs4 import BeautifulSoup
 import requests
 import csv
 import os
-import nltk
+# import nltk
 import pandas as pd
 import json
-from nltk.corpus import stopwords
+# from nltk.corpus import stopwords
 import networkx as nx
 # nltk.download('stopwords')
 import pyTigerGraph as tg
@@ -148,13 +148,13 @@ def generate_context(Search_Text):
     Return: Text without stopwords -> Search_Context 
     '''
     # Removing stop words
-    stop_words = stopwords.words('english')
+     # stop_words = stopwords.words('english')
     words = Search_Text.split()
-    Search_Context = []
+    search_context = []
     for word in words:
-        if word not in stop_words:
-            Search_Context.append(word)
-    return ' '.join(Search_Context)
+        # if word not in stop_words:
+            search_context.append(word)
+    return ' '.join(search_context)
 
 
 
@@ -249,16 +249,11 @@ def generate_graph_wTG(Search_Context,credentials):
                 and conn.upsertEdges("Package","has_license","License",edge_2) and conn.upsertEdges("Package","used_language","Programming_Lang",edge_3)
                 and conn.upsertEdges("Package","has_dependency","Dependency_Package",edge_4))
         if result:
-            try:
-                print("Graph Generated for "+Search_Context)
-                # graph = conn.runInstalledQuery("Stable_Package_Graph_wData")
-                graph = conn.runInstalledQuery("Package_Data",params = {"Status":"4%"})
-                with open(base_directory+"/graph.json", "w") as graphfile:
-                    json.dump(graph[0], graphfile)
-                return {"Status Code" : Status_Code["Success"] , "Description" : "Graph generated"}
-            except Exception as e:
-                print(e)
-                return {"Status Code" : Status_Code["Fail"] , "Description" : "Error in graph generation"}
+            print("Graph Generated for "+Search_Context)
+            graph = conn.runInstalledQuery("Stable_Package_Graph_wData")
+            with open(base_directory+"/graph.json", "w") as graphfile:
+                json.dump(graph[0], graphfile)
+            return {"Status Code" : Status_Code["Success"] , "Description" : "Graph generated"}
         else:
             print("Error in graph generation")
             logging.error('Error in generating graph for ' + Search_Context)

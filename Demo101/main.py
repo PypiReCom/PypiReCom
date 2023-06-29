@@ -1,6 +1,6 @@
 from fastapi import FastAPI, BackgroundTasks
 from fastapi.responses import FileResponse
-from fuctions import *
+from functions import *
 import yaml
 from yaml.loader import SafeLoader
 
@@ -43,7 +43,7 @@ def search_pypi(Search_Text: str, background_task:BackgroundTasks):
     # If data already exist
     # Fetching and sending back the json response
     try:
-        with open("C:/Users/anime/Documents/PypiReCom/V1/library/index.csv","r") as file:
+        with open(parent_dir+"index.csv","r") as file:
             for context in file.read().split():
                 if '_'.join(Search_Context.split()) in context.split(','):
                     print("We already have the data.")

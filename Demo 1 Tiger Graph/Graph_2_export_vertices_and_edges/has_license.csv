@@ -1,8 +1,0 @@
-Edge Type,Source Vertex ID,Source Vertex Type,Target Vertex ID,Target Vertex Type
-has_license,Spektral,Package,MIT,License
-has_license,DGL,Package,Apache Software License,License
-has_license,Torch,Package,BSD License,License
-has_license,MXNet,Package,Apache Software License,License
-has_license,TensorFlow,Package,Apache Software License,License
-has_license,Flax,Package,Apache Software License,License
-has_license,Haiku,Package,MIT,License
