@@ -1,0 +1,22 @@
+{
+    "nodes": {
+        "name": {
+            "attributes": ["name","author","author_email"],
+            "vertex_type": "Package"
+        },
+        "development_status": {
+            "attributes": [],
+            "vertex_type": "Development Status"
+        },
+        "license": {
+            "attributes": [],
+            "vertex_type": "license"
+        }
+    },
+    "edges": {
+        "dev_status": ["name","development_status"],
+        "has_license": ["name", "license"],
+        "has_dependency": ["name", "dependency_pkg"],
+        "used_language": ["name", "language"]
+    }
+}

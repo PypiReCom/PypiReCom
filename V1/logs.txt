@@ -1,0 +1,18 @@
+08-03-23 ERROR-Folder can not be created for llmsException: [WinError 183] Cannot create a file when that file already exists: 'C:/Users/anime/Documents/PypiReCom/V1/library/llms'
+09-03-23 ERROR-Graph function - Exception: [Errno 2] No such file or directory: 'C:/Users/anime/Documents/PypiReCom/V1/library/gan/graph.json'
+09-03-23 ERROR-Graph function - Exception: [Errno 2] No such file or directory: 'C:/Users/anime/Documents/PypiReCom/V1/library/gan/graph.json'
+11-03-23 ERROR-generate_graph_wTG function - Exception: 404 Client Error: Not Found for url: https://5595af72a6f4484f80bb17b8a707fa89.i.tgcloud.io:443/restpp/query/PypiReCom/Package_Data?4%
+11-03-23 ERROR-generate_graph_wTG function - Exception: 404 Client Error: Not Found for url: https://5595af72a6f4484f80bb17b8a707fa89.i.tgcloud.io:443/restpp/query/PypiReCom/Package_Data?Status=4%25
+30-03-23 ERROR-Folder can not be created for web_scrappingException: [WinError 183] Cannot create a file when that file already exists: 'C:/Users/anime/Documents/PypiReCom/V1/library/web_scrapping'
+30-03-23 ERROR-Error in saving data for web_scrapping folder and package: stweet
+30-03-23 ERROR-Response object - Exception: Error in saving
+30-03-23 ERROR-connect_tigergraph function - Exception: 'error'
+30-03-23 ERROR-generate_graph_wTG function - Exception: cannot unpack non-iterable NoneType object
+30-03-23 ERROR-Error in saving data for web_scrapping folder and package: stweet
+30-03-23 ERROR-Response object - Exception: Error in saving
+15-04-23 ERROR-Error in saving data for onnx folder and package: tflite2onnx
+15-04-23 ERROR-Response object - Exception: Error in saving
+15-04-23 ERROR-Error in saving data for onnx folder and package: onnxcli
+15-04-23 ERROR-Response object - Exception: Error in saving
+15-04-23 ERROR-Error in saving data for open_neural_network_exchange folder and package: tada0-toddler-neural-network
+15-04-23 ERROR-Response object - Exception: Error in saving

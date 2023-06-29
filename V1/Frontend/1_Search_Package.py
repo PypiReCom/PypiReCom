@@ -141,6 +141,7 @@ def main():
             except Exception as e:
                 pass
             st.write(graph)
+            graph.render(directory='') 
             # st.download_button("Download Graph Image",data=graph.render(format='png'))
             
             pkg_name,author,author_email,dev_status = st.columns(4)
