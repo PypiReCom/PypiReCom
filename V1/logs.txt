@@ -10,9 +10,63 @@
 30-03-23 ERROR-generate_graph_wTG function - Exception: cannot unpack non-iterable NoneType object
 30-03-23 ERROR-Error in saving data for web_scrapping folder and package: stweet
 30-03-23 ERROR-Response object - Exception: Error in saving
-15-04-23 ERROR-Error in saving data for onnx folder and package: tflite2onnx
-15-04-23 ERROR-Response object - Exception: Error in saving
-15-04-23 ERROR-Error in saving data for onnx folder and package: onnxcli
-15-04-23 ERROR-Response object - Exception: Error in saving
-15-04-23 ERROR-Error in saving data for open_neural_network_exchange folder and package: tada0-toddler-neural-network
-15-04-23 ERROR-Response object - Exception: Error in saving
+15-04-23 ERROR-Folder can not be created for torchyException: [WinError 183] Cannot create a file when that file already exists: 'C:/Users/anime/Documents/PypiReCom/V1/library/torchy'
+05-05-23 ERROR-generate_graph_wCustomSchema function - Exception: [Errno 2] No such file or directory: 'C:/Users/anime/Documents/PypiReCom/V2/library/sleep/Package_Proj_lang.csv'
+05-05-23 ERROR-generate_graph_wCustomSchema function - Exception: [Errno 2] No such file or directory: 'C:/Users/anime/Documents/PypiReCom/V2/library/sleep/Package_Proj_Lang.csv'
+05-05-23 ERROR-generate_graph_wCustomSchema function - Exception: 'name'
+05-05-23 ERROR-generate_graph_wCustomSchema function - Exception: can only concatenate str (not "KeyError") to str
+05-05-23 ERROR-gml_to_json function - Exception: 'vertex_type'
+05-05-23 ERROR-Folder can not be created for sleepException: [WinError 183] Cannot create a file when that file already exists: 'C:/Users/anime/Documents/PypiReCom/V2/library/sleep'
+05-05-23 ERROR-Graph function - Exception: [Errno 2] No such file or directory: 'C:/Users/anime/Documents/PypiReCom/V2/library/sleep/graph.json'
+05-05-23 ERROR-Graph function - Exception: Expecting value: line 1 column 1 (char 0)
+28-05-23 ERROR-Response object - Exception: 'info'
+28-05-23 ERROR-Response object - Exception: 'info'
+28-05-23 ERROR-Response object - Exception: 'info'
+28-05-23 ERROR-Response object - Exception: 'info'
+28-05-23 ERROR-Response object - Exception: 'info'
+28-05-23 ERROR-Response object - Exception: 'info'
+28-05-23 ERROR-Response object - Exception: 'info'
+28-05-23 ERROR-Response object - Exception: 'info'
+28-05-23 ERROR-Response object - Exception: 'info'
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Graph function - Exception: [Errno 2] No such file or directory: 'C:/Users/anime/Documents/PypiReCom/V2/library/api_dev/graph.json'
+02-07-23 ERROR-Graph function - Exception: [Errno 2] No such file or directory: 'C:/Users/anime/Documents/PypiReCom/V2/library/api_dev/graph.json'
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined
+02-07-23 ERROR-Response object - Exception: name 'llm_packages' is not defined

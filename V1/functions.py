@@ -45,17 +45,17 @@ def fetch_data(response):
 
     Return: List of data containing package name,author,email,license,development status,programming language and dependency
     '''
-    package_name = response['info']['name'] 
-    package_author = response['info']['author'] if response['info']['author'] != None else ''
-    package_author_email = response['info']['author_email'] if response['info']['author_email'] != None else ''
-    package_license = response['info']['license'] if response['info']['license'] != None else ''
+    name = response['info']['name'] 
+    author = response['info']['author'] if response['info']['author'] != None else ''
+    author_email = response['info']['author_email'] if response['info']['author_email'] != None else ''
+    license = response['info']['license'] if response['info']['license'] != None else ''
     programming_lang = set()
-    package_dev_status = ''
+    development_status = ''
     classifier = response["info"]['classifiers'] if response["info"]['classifiers'] != None else []
     for classifier in response["info"]['classifiers']:
         classifier_list = classifier.split(' :: ')
         if 'Development Status' in classifier_list:
-            package_dev_status = classifier_list[-1]
+            development_status = classifier_list[-1]
         elif 'Programming Language' in classifier_list:
             programming_lang.add(classifier_list[1])
     package_dependency = set()
@@ -63,7 +63,7 @@ def fetch_data(response):
     for dependency in requires_dist:
         package_dependency.add(dependency.split()[0])
     
-    return [package_name,package_author,package_author_email,package_license,package_dev_status,programming_lang,package_dependency]
+    return [name,author,author_email,license,development_status,programming_lang,package_dependency]
 
 
 
@@ -93,13 +93,13 @@ def create_directory(Search_Context):
     try:
         with open(base_directory+"/Package_Basic_Data.csv","a", newline='') as file:
             csv_file = csv.writer(file)
-            csv_file.writerow(['package_name','package_author','package_author_email','package_license','package_dev_status','search_meta'])
+            csv_file.writerow(['name','author','author_email','license','development_status','source'])
         with open(base_directory+"/Package_Dependency.csv","a", newline='') as file:
             csv_file = csv.writer(file)
-            csv_file.writerow(['package_name','dependency_pkg'])
+            csv_file.writerow(['name','dependency_pkg'])
         with open(base_directory+"/Package_Prog_Lang.csv","a", newline='') as file:
             csv_file = csv.writer(file)
-            csv_file.writerow(['package_name','language'])
+            csv_file.writerow(['name','language'])
     except:
         print('Error in creating file.')
         logging.error('Error in creating file in ' + '_'.join(Search_Context.split()) + ' folder')
@@ -109,7 +109,7 @@ def create_directory(Search_Context):
 
 
 
-def save_data(Search_Context,data):
+def save_data(Search_Context,data,pypi_packages):
     '''
     Input: Space seperaetd keywords to be searched -> Search_Context (In address or any operation _ is used to join the Search_Context), 
            List of data containing package name,author,email,license,development status,programming language and dependency -> data
@@ -120,20 +120,23 @@ def save_data(Search_Context,data):
     base_directory = parent_dir+'_'.join(Search_Context.split())
     try:
         # Saving data to files
-        package_name,package_author,package_author_email,package_license,package_dev_status,programming_lang,package_dependency = data
+        name,author,author_email,license,development_status,programming_lang,package_dependency = data
+        source = ''
+        if name in pypi_packages:
+            source += 'Pypi'
         with open(base_directory+"/Package_Basic_Data.csv","a", newline='') as file:
             csv_file = csv.writer(file)
-            csv_file.writerow([package_name,package_author,package_author_email,package_license,package_dev_status,''])
+            csv_file.writerow([name,author,author_email,license,development_status,source])
         with open(base_directory+"/Package_Dependency.csv","a", newline='') as file:
             csv_file = csv.writer(file)
             for dependency_pkg in package_dependency:
-                csv_file.writerow([package_name,dependency_pkg])
+                csv_file.writerow([name,dependency_pkg])
         with open(base_directory+"/Package_Prog_Lang.csv","a", newline='') as file:
             csv_file = csv.writer(file)
             for language in programming_lang:
-                csv_file.writerow([package_name,language])
+                csv_file.writerow([name,language])
     except:
-        logging.error('Error in saving data for ' + '_'.join(Search_Context.split()) + ' folder and package: '+ package_name)
+        logging.error('Error in saving data for ' + '_'.join(Search_Context.split()) + ' folder and package: '+ name)
         print('Error in saving')
         raise Exception('Error in saving')
 
@@ -223,26 +226,26 @@ def generate_graph_wTG(Search_Context,credentials):
 
         # Adding data tupple in list for updation
         for index in df.index:
-            package_vertex.append((df["package_name"][index], {"author" : df["package_author"][index],
-                                                                "author_email" : df["package_author_email"][index],
-                                                                "dev_status" : df["package_dev_status"][index],
-                                                                "search_meta" : df["search_meta"][index]}))
-            edge_1.append((df["package_name"][index],df["package_dev_status"][index],{}))
-            edge_2.append((df["package_name"][index],df["package_license"][index],{}))
+            package_vertex.append((df["name"][index], {"author" : df["author"][index],
+                                                                "author_email" : df["author_email"][index],
+                                                                "dev_status" : df["development_status"][index],
+                                                                "source" : df["source"][index]}))
+            edge_1.append((df["name"][index],df["development_status"][index],{}))
+            edge_2.append((df["name"][index],df["license"][index],{}))
 
         # Extracting data from Package_Prog_Lang csv
         df = csv_to_df(base_directory+"/Package_Prog_Lang.csv")
 
         # Adding data tupple in list for updation
         for index in df.index:
-            edge_3.append((df["package_name"][index],df["language"][index],{}))
+            edge_3.append((df["name"][index],df["language"][index],{}))
         
         # Extracting data from Package_Dependency csv
         df = csv_to_df(base_directory+"/Package_Dependency.csv")
 
         # Adding data tupple in list for updation
         for index in df.index:
-            edge_4.append((df["package_name"][index],df["dependency_pkg"][index],{}))
+            edge_4.append((df["name"][index],df["dependency_pkg"][index],{}))
             
         # Adding all the Vertices and Edges to the Tiger Graph
         result = (conn.upsertVertices("Package",package_vertex) and conn.upsertEdges("Package","curr_status","Dev_Status",edge_1)
@@ -287,28 +290,28 @@ def generate_graph_wNX(Search_Context):
 
         # Adding data tupple in list for updation
         for index in df.index:
-            G.add_edge(df["package_name"][index],df["package_dev_status"][index],label='curr_status')
-            G.add_edge(df["package_name"][index],df["package_license"][index],label='has_license')
-            nx.set_node_attributes(G,{df["package_name"][index] : {"author" : df["package_author"][index],
-                                                                "author_email" : df["package_author_email"][index],
-                                                                "dev_status" : df["package_dev_status"][index],
-                                                                "search_meta" : df["search_meta"][index],
+            G.add_edge(df["name"][index],df["development_status"][index],label='curr_status')
+            G.add_edge(df["name"][index],df["license"][index],label='has_license')
+            nx.set_node_attributes(G,{df["name"][index] : {"author" : df["author"][index],
+                                                                "author_email" : df["author_email"][index],
+                                                                "dev_status" : df["development_status"][index],
+                                                                "source" : df["source"][index],
                                                                 "vertex_type" : "Package"},
-                                        df["package_dev_status"][index] : {"vertex_type" : "Development Status"},
-                                        df["package_license"][index] : {"vertex_type" : "License"}})
+                                        df["development_status"][index] : {"vertex_type" : "Development Status"},
+                                        df["license"][index] : {"vertex_type" : "License"}})
  
         # Extracting data from Package_Prog_Lang csv
         df = csv_to_df(base_directory+"/Package_Prog_Lang.csv")
         # Adding data tupple in list for updation
         for index in df.index:
-            G.add_edge(df["package_name"][index],df["language"][index],label='used_language')
+            G.add_edge(df["name"][index],df["language"][index],label='used_language')
             nx.set_node_attributes(G,{df["language"][index] : {"vertex_type" : "Programming Language"}})
 
         # Extracting data from Package_Dependency csv
         df = csv_to_df(base_directory+"/Package_Dependency.csv")
         # Adding data tupple in list for updation
         for index in df.index:
-            G.add_edge(df["package_name"][index],df["dependency_pkg"][index],label='has_dependency')
+            G.add_edge(df["name"][index],df["dependency_pkg"][index],label='has_dependency')
             nx.set_node_attributes(G,{df["dependency_pkg"][index] : {"vertex_type" : "Dependency Package"}})
         
         nx.write_gml(G, path = parent_dir + '_'.join(Search_Context.split()) + '/graph.gml')
@@ -337,8 +340,8 @@ def json_to_gml(Search_Context):
             result = json.load(graphfile)
             for package_dependency in result['Package_Dependency']:
                 G.add_edge(package_dependency['package'],package_dependency['dependency'],label='has_dependency')
-            for package_license in result['Package_License']:
-                G.add_edge(package_license['package'],package_license['license'],label='has_license')
+            for license in result['license']:
+                G.add_edge(license['package'],license['license'],label='has_license')
             for package_language in result['Package_Language']:
                 G.add_edge(package_language['package'],package_language['programming_language'],label='used_language')
         nx.write_gml(G, path = parent_dir + '_'.join(Search_Context.split()) + '/graph.gml')
@@ -376,27 +379,29 @@ def gml_to_json(Search_Context):
                 package_data['attributes'] = {"author" : node['author'],
                                             "author_email" : node['author_email'],
                                             "dev_status" : node['dev_status'],
-                                            "search_meta" : node['search_meta']}
+                                            "source" : node['source']}
                 results.append(package_data)
         # print(json.loads(H)['links'])
         package_dependency = []
-        package_license = []
+        license = []
         package_language = []
         for edge in json.loads(H)['links']:
             if edge['label'] == 'has_dependency':
                 package_dependency.append({"package": edge['source'], "dependency": edge['target']})
             if edge['label'] == 'has_license':
-                package_license.append({"package": edge['source'], "license": edge['target']})
+                license.append({"package": edge['source'], "license": edge['target']})
             if edge['label'] == 'used_language':
                 package_language.append({"package": edge['source'], "programming_language": edge['target']})
 
         with open(base_directory+"/graph.json", "w") as graphfile:
-            json.dump({'result':results,'Package_Dependency':package_dependency,'Package_License':package_license,'Package_Language':package_language}, graphfile)
+            json.dump({'result':results,'Package_Dependency':package_dependency,'Package_License':license,'Package_Language':package_language}, graphfile)
         
         return {"Status Code" : Status_Code["Success"] ,"Description" : "Json generated"}
     except Exception as e:
         logging.error(f'gml_to_json function - Exception: {e}')
         return {"Status Code" : Status_Code["Fail"] ,"Description" : "Json not generated"}
+
+
 
 def fetch_and_update_graph(Search_Context,credentials):
     '''
@@ -411,18 +416,17 @@ def fetch_and_update_graph(Search_Context,credentials):
 
     '''
     init = time()
-    # 1
-    # Data scrapping required for getting list of packages
-    packages = []
-    # Taking 100 Packages from the first 5 pages
-    for page in range(1, search_page_range + 1):
-        packages += get_packages(pypi_search_url + '?q=' + '+'.join(Search_Context.split()) + '&page=' + str(page))
-    packages = [*set(packages)]
-    package_count = 0
-    
-    # 2. creating directory
+    # 1. creating directory
+    # check for status
     if create_directory(Search_Context)['Status Code'] == 200:
-        # check for status
+        # 2. Data scrapping required for getting list of packages
+        pypi_packages = []
+        # Taking 100 Packages from the first 5 pages
+        for page in range(1, search_page_range + 1):
+            pypi_packages += get_packages(pypi_search_url + '?q=' + '+'.join(Search_Context.split()) + '&page=' + str(page))
+        packages = [*set(pypi_packages)]
+        package_count = 0
+
         # 3. Getting data of each package in the package list
         for package in packages:
             # Package data in Json format
@@ -431,12 +435,12 @@ def fetch_and_update_graph(Search_Context,credentials):
                 # Picking nesseary data form Json file
                 data = fetch_data(response)
                 # Saving data in library
-                save_data(Search_Context,data)
+                save_data(Search_Context,data,pypi_packages)
                 package_count = package_count + 1
             except Exception as e:
                 logging.error(f'Response object - Exception: {e}')
                 print("Error in response")
-    
+                
         # 4. Graph Generation function
         if  credentials['graph_db'] == "TigerGraph":
             if generate_graph_wTG(Search_Context,credentials)['Status Code'] == 200:
@@ -447,7 +451,7 @@ def fetch_and_update_graph(Search_Context,credentials):
             if generate_graph_wNX(Search_Context)['Status Code'] == 200:
                 if gml_to_json(Search_Context)['Status Code'] == 200:
                     update_index(Search_Context, package_count)
-        
+
         else:
             logging.error('Credential error - graph_db not configured')
             return {"Status Code" : Status_Code["Fail"] , "Description" : "Credential error - incorrect graph_db"}

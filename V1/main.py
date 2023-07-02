@@ -24,7 +24,7 @@ def fetch_search_context():     # Return the list of all the Search Context avai
         search_context_list = []
         date_updated_list = []
         no_of_pkg_list = []
-        with open("library/index.csv","r") as file:
+        with open(parent_dir+"index.csv","r") as file:
             for Search_Context in file.read().split():
                 search_context_list.append(Search_Context.split(',')[0])
                 date_updated_list.append(Search_Context.split(',')[1])
@@ -43,7 +43,7 @@ def search_pypi(Search_Text: str, background_task:BackgroundTasks):
     # If data already exist
     # Fetching and sending back the json response
     try:
-        with open("C:/Users/anime/Documents/PypiReCom/V1/library/index.csv","r") as file:
+        with open(parent_dir+"index.csv","r") as file:
             for context in file.read().split():
                 if '_'.join(Search_Context.split()) in context.split(','):
                     print("We already have the data.")
