@@ -5,6 +5,11 @@
 
 </div>
 
+### Install these before you start
+Pre-requisite:
+- Python 3.8
+- Git
+
 ## Steps to run on Mac or Linux
    - Download the start.sh file fron GitHub.
    - Open terminal in that folder.
