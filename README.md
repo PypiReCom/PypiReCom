@@ -5,14 +5,3 @@
 
 </div>
 
-## Steps to run on Mac or Linux
-   - Download the shart.sh file fron GitHub.
-   - Open terminal in that folder.
-   - Run this command to make the shell file executable.
-   ```
-   chmod +x ./start.sh
-   ```
-   - To execute the file type this.
-   ```
-   ./start.sh
-   ```
