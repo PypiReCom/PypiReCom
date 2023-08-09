@@ -1,0 +1,13 @@
+name,dependency_pkg
+upgini,pandas
+upgini,python-json-logger
+upgini,lightgbm
+upgini,fastparquet
+upgini,catboost
+upgini,requests
+upgini,pydantic
+upgini,pyjwt
+upgini,xhtml2pdf
+upgini,scikit-learn
+upgini,numpy
+upgini,python-dateutil
