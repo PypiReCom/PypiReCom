@@ -1,0 +1,21 @@
+name,author,author_email,license,development_status,source
+pyrus-nn,Miles Granger,miles59923@gmail.com,,,Pypi
+nn-backpropogate,Aryan Khandelwal,nk28agra@gmail.com,,,Pypi
+pyronn,Christopher Syben,christopher.syben@fau.de,,,Pypi
+nn-dataflow,Mingyu Gao,mgao12@stanford.edu,BSD 3-clause,3 - Alpha,Pypi
+nn-helper,Mark de Blaauw,markdeblaauw@gmail.com,MIT,,Pypi
+nn-meter,Microsoft nn-Meter Team,nn-meter-dev@microsoft.com,MIT,,Pypi
+nn_wtf,Lene Preuss,lene.preuss@gmail.com,Apache Software License V2,2 - Pre-Alpha,
+graph-tool-nn,Jan Olszak,janekolszak@gmail.com,GNU General Public License v3 (GPLv3),3 - Alpha,Pypi
+ace-nn,zhaofeng-shu33,616545598@qq.com,Apache License Version 2.0,4 - Beta,Pypi
+nn-pruning,,,MIT,3 - Alpha,Pypi
+nn6,ccckmit,ccckmit@gmail.com,,,Pypi
+sd-nn,Nidhal Baccouri,nidhalbacc@gmail.com,BSD license,4 - Beta,Pypi
+qubo-nn,Instance01,whodis@instancedev.com,MIT,3 - Alpha,Pypi
+gwu-nn,Joel Klein,jdk51405@gmail.com,MIT,,Pypi
+lign,Josue N Rivera,josue.n.rivera@outlook.com,Mozilla Public License Version 2.0,,Pypi
+nn,Ravindra Marella,,MIT,1 - Planning,Pypi
+e3nn,,,MIT,,Pypi
+nano-autograds,Youness EL BRAG,younsselbrag@gmail.com,,,Pypi
+manim-ml,Alec Helbling,,,,Pypi
+network,Andrew Mulholland,gbaman@users.noreply.github.com,MIT,,Pypi
