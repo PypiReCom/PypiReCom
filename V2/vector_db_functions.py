@@ -5,7 +5,6 @@ import faiss
 pd.set_option('display.max_columns', 4)
 import time
 from functools import wraps
-import os
 
 #takes a single argument for the function to be decorated
 def timeit(func):
@@ -149,24 +148,3 @@ def encode_vectors_and_store(df, vectors_file_path):
     encoder = SentenceTransformer("paraphrase-mpnet-base-v2")
     vectors = encoder.encode(text)
     store_vectors(vectors, vectors_file_path)
-
-
-def main():
-    file_path = 'library/index.csv'
-    vectors_file_path = 'encoded_vectors_file.txt'
-
-    if not os.path.exists(vectors_file_path):
-        df = read_data(file_path)
-        encode_vectors_and_store(df, vectors_file_path)
-    else:
-        df = read_data(file_path)
-
-    loaded_vectors = load_vectors(vectors_file_path)
-    index = build_index(loaded_vectors)
-
-    search_context = input("Enter the search context: ")
-    results = perform_search(index, df, search_context)  # Pass df and search_context here
-    print(results)
-
-if __name__ == "__main__":
-    main()
