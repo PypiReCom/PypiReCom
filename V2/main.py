@@ -77,3 +77,32 @@ def search_pypi(Search_Text: str, Search_Exact: int, background_task:BackgroundT
         # search_context = input("Enter the search context: ")
         results = perform_search(index, df, Search_Context)  # Pass df and search_context here
         return {'Suggested Packages': results.Packages.to_list()}
+    
+@app.get('/comparison_metric')
+def compare(Search_Text: str, background_task:BackgroundTasks):
+    Search_Text = Search_Text.lower()
+    Search_Context = generate_context(Search_Text)
+    credentials = yaml.load(open('Graph_Config.yml'),Loader=SafeLoader)
+
+    # If data already exist
+    # Fetching and sending back the json response
+    try:
+        with open(parent_dir+"index.csv","r") as file:
+            for context in file.read().split():
+                if '_'.join(Search_Context.split()) in context.split(','):
+                    print("We already have the data.")
+                    pkg_graph = graph(Search_Context)
+                    package_dependency_count = {}
+                    for package_dependency in pkg_graph['Package_Dependency']:
+                        if package_dependency['package'] in package_dependency_count:
+                            package_dependency_count[package_dependency['package']] += 1
+                        else:
+                            package_dependency_count[package_dependency['package']] = 1
+                    pkg_graph['Package_Dependency_Count'] = package_dependency_count
+                    pkg_names = {'result': get_packages(pypi_search_url + '?q=' + '+'.join(Search_Context.split()))}
+                    return {'Pip':pkg_names,'Pypirecom':pkg_graph}
+    except:
+        return "Please check back again"
+    
+    background_task.add_task(fetch_and_update_graph,Search_Context,credentials)
+    return "Check back after few minutes result is being prepared."
