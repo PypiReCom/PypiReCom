@@ -2,22 +2,26 @@
 import React, { useEffect } from "react";
 import Graph from "graphology";
 import Sigma from "sigma";
-
 const GraphComponent = (props) => {
   useEffect(() => {
     const data=props.data;
   console.log("final",data);
 
     const container = document.getElementById("sigma-container");
+    container.innerHTML = '';
+    
     const graph = new Graph();
+
 
     const nodeSizes = { "Package": 10, "Dependency": 7, "License": 5 }; // Define sizes for each node type
 
     const nodeColors = { "Package": "green", "Dependency": "pink", "License": "lightblue" };
+    
 
     const addNode = (id, type, size) => {
       if (!graph.hasNode(id)) {
         graph.addNode(id, { label: id, color: nodeColors[type] || "gray", size: size });
+        
       }
     };
 
@@ -26,7 +30,7 @@ const GraphComponent = (props) => {
     };
 
     console.log("data", typeof(data));
-
+    try{
     data.result.forEach(item => {
       addNode(item.v_id, item.v_type, nodeSizes[item.v_type] || 5); // Set size based on node type
     });
@@ -127,14 +131,21 @@ const GraphComponent = (props) => {
 
       renderer.refresh();
     });
-
+  
     return () => {
       renderer.kill();
     };
+  }catch(error){
+    console.error('Error rendering the graph:', error);
+      const container = document.getElementById('sigma-container');
+      container.innerHTML = '<div style="display: flex; justify-content: center; align-items: center; height: 100%;">Graph cannot be loaded</div>'; // Centered message if the graph cannot be loaded
+  }
   }, [props.data]);
 
   // return <div id="sigma-container" style={{ height: "800px", backgroundColor: "#f9f9f9" }}></div>;
+ 
   return <div id="sigma-container" style={{ height: "300px", width: "100%"}}></div>;
+  
 
 };
 
