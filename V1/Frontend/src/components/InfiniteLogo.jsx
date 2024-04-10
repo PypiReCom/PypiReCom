@@ -1,13 +1,13 @@
-import React from 'react';
-import img1 from '../Assets/LOGO_CAROUSEL/IMG-20240323-WA0006.jpg';
-import img2 from '../Assets/LOGO_CAROUSEL/IMG-20240323-WA0007.jpg';
-import img3 from '../Assets/LOGO_CAROUSEL/IMG-20240323-WA0008.jpg';
-import img4 from '../Assets/LOGO_CAROUSEL/IMG-20240323-WA0009.jpg';
-import img5 from '../Assets/LOGO_CAROUSEL/IMG-20240323-WA0010.jpg';
-import img6 from '../Assets/LOGO_CAROUSEL/IMG-20240323-WA0011.jpg';
-import img7 from '../Assets/LOGO_CAROUSEL/IMG-20240323-WA0012.jpg';
-import img8 from '../Assets/LOGO_CAROUSEL/IMG-20240323-WA0013.jpg';
-import img9 from '../Assets/LOGO_CAROUSEL/IMG-20240323-WA0014.jpg';
+import img1 from '../Assets/LOGO_CAROUSEL/BeautifulSoup.jpg';
+import img2 from '../Assets/LOGO_CAROUSEL/Bootstrap.jpg';
+import img3 from '../Assets/LOGO_CAROUSEL/FastAPI.jpg';
+import img4 from '../Assets/LOGO_CAROUSEL/Graphviz.jpg';
+import img5 from '../Assets/LOGO_CAROUSEL/NetworkX.jpg';
+import img6 from '../Assets/LOGO_CAROUSEL/pandas.jpg';
+import img7 from '../Assets/LOGO_CAROUSEL/pyTiger.jpg';
+import img8 from '../Assets/LOGO_CAROUSEL/React.jpg';
+import img9 from '../Assets/LOGO_CAROUSEL/Requests.jpg';
+import img10 from '../Assets/LOGO_CAROUSEL/YAML.jpg';
 
 
 
@@ -86,6 +86,7 @@ const InfiniteLogo = () => {
          <img src={img7} alt="Logo" />
          <img src={img8} alt="Logo" />
          <img src={img9} alt="Logo" />
+         <img src={img10} alt="Logo" />
         </div>
         <div className="logos-slide">
         <img src={img1} alt="Logo" />
@@ -97,6 +98,7 @@ const InfiniteLogo = () => {
          <img src={img7} alt="Logo" />
          <img src={img8} alt="Logo" />
          <img src={img9} alt="Logo" />
+         <img src={img10} alt="Logo" />
         </div>
       </div>
     </>

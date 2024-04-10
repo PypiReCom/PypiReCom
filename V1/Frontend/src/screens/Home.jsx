@@ -5,6 +5,7 @@ import logo from '../Assets/logo.png';
 import InfiniteLogo from "../components/InfiniteLogo";
 import { useLocation } from 'react-router-dom';
 import GraphComponent from "../components/Graph";
+import { BASE_URL } from "../api-endpoint.js";
 
 export default function Home() {
   const [searchText, setSearchText] = useState('');
@@ -17,9 +18,11 @@ export default function Home() {
   const [selectedStatus, setSelectedStatus] = useState('');
   const [searched, setSearched] = useState(false);
   const location = useLocation(); 
+  const searchParams = new URLSearchParams(location.search);
+
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const searchTextParam = searchParams.get('searchText');
+    const searchParamsnew = new URLSearchParams(location.search);
+    const searchTextParam = searchParamsnew.get('searchText');
     if (searchTextParam) {
       setSearchText(searchTextParam);
       // fetchData();
@@ -29,7 +32,7 @@ export default function Home() {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`https://pypirecom-api.azurewebsites.net/search?Search_Text=${searchText}`);
+      const response = await fetch(`${BASE_URL}/search?Search_Text=${searchText}`);
       const data = await response.json();
       
       if (data === "Please check back again" || data === "Check back after few minutes result is being prepared.") {
@@ -53,9 +56,19 @@ export default function Home() {
     }
   };
 
+
   const handleSearch = () => {
     if (searchText) {
+
+      searchParams.set('searchText', searchText);
+
+      // Update the URL with the new search query string
+      const newSearch = `?${searchParams.toString()}`;
+      window.history.replaceState(null, '', newSearch);
+      
       fetchData();
+
+      
     }
   };
 
@@ -76,7 +89,7 @@ export default function Home() {
   // Function to handle downloading graph file
   const downloadGraphFile = async () => {
     try {
-      const response = await fetch(`https://pypirecom-api.azurewebsites.net/get_graph_file?Search_Text=${searchText}`);
+      const response = await fetch(`${BASE_URL}/get_graph_file?Search_Text=${searchText}`);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(new Blob([blob]));
       const link = document.createElement('a');
@@ -93,7 +106,7 @@ export default function Home() {
   // Function to handle downloading GML file
   const downloadGmlFile = async () => {
     try {
-      const response = await fetch(`https://pypirecom-api.azurewebsites.net/get_gml_file?Search_Text=${searchText}`);
+      const response = await fetch(`${BASE_URL}/get_gml_file?Search_Text=${searchText}`);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(new Blob([blob]));
       const link = document.createElement('a');

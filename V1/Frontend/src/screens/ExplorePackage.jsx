@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
+import Footer from "../components/Footer.jsx";
+import Navbar from "../components/Navbar.jsx";
 import logo from '../Assets/logo.png';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../api-endpoint.js';
 
-export default function About() {
+export default function ExplorePackage() {
   const [searchContextList, setSearchContextList] = useState([]);
   const [dateUpdated, setDateUpdated] = useState([]);
   const [totalPackages, setTotalPackages] = useState([]);
@@ -14,7 +15,7 @@ export default function About() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://pypirecom-api.azurewebsites.net/get_seach_context_list');
+        const response = await fetch(`${BASE_URL}/get_seach_context_list`);
         const data = await response.json();
         setSearchContextList(data['Search Context']);
         setDateUpdated(data['Date Updated']);

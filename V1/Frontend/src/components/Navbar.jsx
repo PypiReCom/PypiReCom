@@ -28,7 +28,7 @@ export default function Navbar() {
       <div className="container">
         <ul className="navbar-nav align-items-center" style={{ marginLeft: 'auto' }}>
           <li className="nav-item">
-            <Link className="nav-link" to="/about" style={navLinkStyle} activeStyle={hoverStyle}>
+            <Link className="nav-link" to="/ExplorePackages" style={navLinkStyle} activeStyle={hoverStyle}>
               Explore Graphs
             </Link>
           </li>

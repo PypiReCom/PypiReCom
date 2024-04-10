@@ -8,8 +8,10 @@ export default function Footer() {
           Made with <span style={{color: 'red', fontSize: '24px'}}>&#10084;&#65039;</span><br />by 
           <span>
             <a href="https://www.linkedin.com/in/bioenable/" target="_blank" rel="noopener noreferrer" className="mx-1" style={{color: '#0077b5'}}>Dr. Shyam Sundaram</a>, 
-            <a href="https://www.linkedin.com/in/animesh2210/" target="_blank" rel="noopener noreferrer" className="mx-1" style={{color: '#0077b5'}}>Animesh Verma</a>, and 
-            <a href="https://www.linkedin.com/in/sridhar-aluru-8b9904176/" target="_blank" rel="noopener noreferrer" className="mx-1" style={{color: '#0077b5'}}>Sridhar Aluru</a>
+            <a href="https://www.linkedin.com/in/animesh2210/" target="_blank" rel="noopener noreferrer" className="mx-1" style={{color: '#0077b5'}}>Animesh Verma</a>,
+            <a href="https://www.linkedin.com/in/prateek-balaji/" target="_blank" rel="noopener noreferrer" className="mx-1" style={{color: '#0077b5'}}>Prateek Balaji</a>,
+            <a href="https://www.linkedin.com/in/kartikey-bhatnagar/" target="_blank" rel="noopener noreferrer" className="mx-1" style={{color: '#0077b5'}}>Kartikey Bhatnagar</a>, and
+            <a href="https://www.linkedin.com/in/avi-gupta-a1679a94/" target="_blank" rel="noopener noreferrer" className="mx-1" style={{color: '#0077b5'}}>Avi Gupta</a>
           </span>
         </p>
       </footer>
