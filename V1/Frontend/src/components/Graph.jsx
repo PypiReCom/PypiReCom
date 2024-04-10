@@ -131,7 +131,7 @@ const GraphComponent = (props) => {
     return () => {
       renderer.kill();
     };
-  }, []);
+  }, [props.data]);
 
   // return <div id="sigma-container" style={{ height: "800px", backgroundColor: "#f9f9f9" }}></div>;
   return <div id="sigma-container" style={{ height: "300px", width: "100%"}}></div>;

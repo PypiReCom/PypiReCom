@@ -5,7 +5,7 @@ import logo from '../Assets/logo.png';
 import InfiniteLogo from "../components/InfiniteLogo";
 import { useLocation } from 'react-router-dom';
 import GraphComponent from "../components/Graph";
-import { BASE_URL } from "../api-endpoint.js";
+import { BASE_URL } from "../api-endpoint";
 
 export default function Home() {
   const [searchText, setSearchText] = useState('');
@@ -18,11 +18,9 @@ export default function Home() {
   const [selectedStatus, setSelectedStatus] = useState('');
   const [searched, setSearched] = useState(false);
   const location = useLocation(); 
-  const searchParams = new URLSearchParams(location.search);
-
   useEffect(() => {
-    const searchParamsnew = new URLSearchParams(location.search);
-    const searchTextParam = searchParamsnew.get('searchText');
+    const searchParams = new URLSearchParams(location.search);
+    const searchTextParam = searchParams.get('searchText');
     if (searchTextParam) {
       setSearchText(searchTextParam);
       // fetchData();
@@ -56,19 +54,9 @@ export default function Home() {
     }
   };
 
-
   const handleSearch = () => {
     if (searchText) {
-
-      searchParams.set('searchText', searchText);
-
-      // Update the URL with the new search query string
-      const newSearch = `?${searchParams.toString()}`;
-      window.history.replaceState(null, '', newSearch);
-      
       fetchData();
-
-      
     }
   };
 
@@ -89,7 +77,8 @@ export default function Home() {
   // Function to handle downloading graph file
   const downloadGraphFile = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/get_graph_file?Search_Text=${searchText}`);
+      const response = await fetch(`${BASE_URL}/get_json_file?Search_Text=${searchText}`);
+      console.log("test",response);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(new Blob([blob]));
       const link = document.createElement('a');
