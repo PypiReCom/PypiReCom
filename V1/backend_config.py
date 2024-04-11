@@ -1,4 +1,4 @@
-parent_dir = "C:/Users/anime/Documents/PypiReCom/V1/library/"
+parent_dir = "library/"
 pypi_search_url = "https://pypi.org/search/"
 #one page means 20 libraries
 search_page_range = 1

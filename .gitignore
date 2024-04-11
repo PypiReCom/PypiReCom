@@ -1,13 +1,19 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Python specific
 Code/__pycache__/fuctions.cpython-39.pyc
 Code/__pycache__/main.cpython-39.pyc
 Code/Frontend/__pycache__/constants.cpython-39.pyc
-V1/Graph_Config.yml
+V1/__pycache__/backend_config.cpython-39.pyc
+V1/__pycache__/fuctions.cpython-39.pyc
+V1/__pycache__/main.cpython-39.pyc
+V1/__pycache__/functions.cpython-39.pyc
+V1/__pycache__/backend_config.cpython-310.pyc
+V1/__pycache__/functions.cpython-310.pyc
+V1/__pycache__/main.cpython-310.pyc
 V1/Frontend/old_1_About.py
-Data_ext.py
-GNN Package List.txt
-GNN.csv
-mega_config.py
-Demo101.zip
+V1/__pycache__/functions.cpython-39.pyc
+V1/__pycache__/main.cpython-39.pyc
 V2/__pycache__/backend_config.cpython-39.pyc
 V2/__pycache__/fuctions.cpython-39.pyc
 V2/__pycache__/functions.cpython-39.pyc
@@ -17,12 +23,34 @@ V2/__pycache__/schema_baseline_config.cpython-39.pyc
 V2/__pycache__/schema_config.cpython-39.pyc
 V2/__pycache__/schema_custom_config.cpython-39.pyc
 V2/Frontend/__pycache__/constants.cpython-39.pyc
-V1/__pycache__/backend_config.cpython-39.pyc
-V1/__pycache__/fuctions.cpython-39.pyc
-V1/__pycache__/main.cpython-39.pyc
+Data_ext.py
+GNN Package List.txt
+GNN.csv
+mega_config.py
+Demo101.zip
+V2/__pycache__/functions.cpython-39.pyc
+V2/__pycache__/main.cpython-39.pyc
+V1/__pycache__/backend_config.cpython-310.pyc
+V1/__pycache__/functions.cpython-310.pyc
+V1/__pycache__/main.cpython-310.pyc
+
+# React specific
+V1/Frontend/node_modules
+V1/Frontend/.pnp
+V1/Frontend/.pnp.js
+V1/Frontend/coverage
+V1/Frontend/build
+V1/Frontend/.DS_Store
+V1/Frontend/.env.local
+V1/Frontend/.env.development.local
+V1/Frontend/.env.test.local
+V1/Frontend/.env.production.local
+V1/Frontend/npm-debug.log*
+V1/Frontend/yarn-debug.log*
+V1/Frontend/yarn-error.log*
+
+# Demo specific
 Demo101/__pycache__/backend_config.cpython-39.pyc
 Demo101/__pycache__/functions.cpython-39.pyc
 Demo101/__pycache__/main.cpython-39.pyc
-V1/__pycache__/functions.cpython-39.pyc
-V1/__pycache__/main.cpython-39.pyc
 Demo101/*
