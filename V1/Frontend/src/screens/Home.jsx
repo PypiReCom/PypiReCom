@@ -77,7 +77,7 @@ export default function Home() {
   // Function to handle downloading graph file
   const downloadGraphFile = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/get_json_file?Search_Text=${searchText}`);
+      const response = await fetch(`${BASE_URL}/get_graph_file?Search_Text=${searchText}`);
       console.log("test",response);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(new Blob([blob]));
