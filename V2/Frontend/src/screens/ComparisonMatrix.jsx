@@ -97,7 +97,7 @@ export default function ComparisonPage() {
 
   const fetchPipResult = async (searchText) => {
     try {
-      const response = await fetch(`${BASE_URL}/get_json_file?Search_Text=${searchText}`);
+      const response = await fetch(`${BASE_URL}/get_graph_file?Search_Text=${searchText}`);
       const data = await response.json();
       if (data && data.result) {
         const packageNames = data.result.map(pkg => pkg.v_id);

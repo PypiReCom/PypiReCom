@@ -3,8 +3,17 @@ from fastapi.responses import FileResponse
 from functions import *
 import yaml
 from yaml.loader import SafeLoader
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)
 
 @app.get('/get_graph_file')
 def get_graph_file(Search_Text:str):
