@@ -15,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],  # Allow all headers
 )
 
-@app.get('/get_graph_file')
+@app.get('/get_json_file')
 def get_graph_file(Search_Text:str):
     Search_Text = Search_Text.lower()
     Search_Context = '_'.join(generate_context(Search_Text).split())

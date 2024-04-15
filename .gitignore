@@ -70,3 +70,4 @@ V2/Frontend/.env.production.local
 V2/Frontend/npm-debug.log*
 V2/Frontend/yarn-debug.log*
 V2/Frontend/yarn-error.log*
+V2/Graph_Config.yml

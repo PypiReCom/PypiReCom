@@ -28,6 +28,7 @@ export default function ComparisonPage() {
     if (searchText) {
       fetchComparisonData(searchText);
     }
+    // eslint-disable-next-line
   }, [searchText]);
 
   const fetchComparisonData = async (searchText) => {
@@ -39,13 +40,13 @@ export default function ComparisonPage() {
         setErrorMessage(data);
         setComparisonData([]);
         setTruePositive('');
-        setTrueNegative(''); 
+        setTrueNegative('');
       } else {
         setComparisonData(data);
         setErrorMessage('');
         updateConfusionMatrix(data); // Update confusion matrix based on fetched data
-        fetchPipResult(searchText); 
-        
+        fetchPipResult(searchText);
+
       }
     } catch (error) {
       console.error("Error fetching comparison data:", error);
@@ -57,14 +58,14 @@ export default function ComparisonPage() {
       setIsLoading(false);
     }
   };
-  
+
 
   const updateConfusionMatrix = (data) => {
     // Calculate true positive and true negative values based on selected options
     if (Object.keys(selectedOptions).length > 0) {
       let relevantPackagesCount = 0;
       data.result.forEach(pkg => {
-        if (Object.keys(selectedOptions).some(option => pkg.attributes.dev_status.includes(option))) {
+        if (Object.keys(selectedOptions).some(option => pkg.attributes.dev_status === option)) {
           relevantPackagesCount++;
         }
       });
@@ -97,7 +98,7 @@ export default function ComparisonPage() {
 
   const fetchPipResult = async (searchText) => {
     try {
-      const response = await fetch(`${BASE_URL}/get_graph_file?Search_Text=${searchText}`);
+      const response = await fetch(`${BASE_URL}/get_json_file?Search_Text=${searchText}`);
       const data = await response.json();
       if (data && data.result) {
         const packageNames = data.result.map(pkg => pkg.v_id);
@@ -112,7 +113,7 @@ export default function ComparisonPage() {
   };
 
   const clearSearch = () => {
-    
+
     setIsLoading(false);
     setComparisonData([]);
     setErrorMessage('');
@@ -127,36 +128,36 @@ export default function ComparisonPage() {
     <div>
       <Navbar />
       <div className="container mt-5">
-      <h2 className="text-center mb-4">Package Comparison Tool</h2>
+        <h2 className="text-center mb-4">Package Comparison Tool</h2>
         {/* Search input */}
         <div className="row justify-content-center">
           <div className="col-md-6">
-            <SearchBar handleSearch={handleSearch} clearSearch={clearSearch}/>
+            <SearchBar handleSearch={handleSearch} clearSearch={clearSearch} />
           </div>
         </div>
         {/* Confusion Matrix and Filter Options */}
-        
+
         <div className="row justify-content-center mt-4">
           {/* Confusion Matrix */}
-          {!isLoading && comparisonData && truePositive !== '' && trueNegative !== '' &&(
-          <div className="col-md-6">
-            <div className="border p-3" style={{ minHeight: '210px' }}>
-              <h4>Confusion Matrix</h4>
-              <div className="row">
-                {/* Display True Positive and False Positive */}
-                <div className="col-md-6">
-                  <p>True Positive: {truePositive}</p>
-                  <p>False Positive: {comparisonData && comparisonData.false_positive}</p>
-                </div>
-                {/* Display True Negative and False Negative */}
-                <div className="col-md-6">
-                  <p>True Negative: {trueNegative}</p>
-                  <p>False Negative: {comparisonData && comparisonData.false_negative}</p>
+          {!isLoading && comparisonData && truePositive !== '' && trueNegative !== '' && (
+            <div className="col-md-6">
+              <div className="border p-3" style={{ minHeight: '210px' }}>
+                <h4>Confusion Matrix</h4>
+                <div className="row">
+                  {/* Display True Positive and False Positive */}
+                  <div className="col-md-6">
+                    <p>True Positive: {truePositive}</p>
+                    <p>False Positive: {comparisonData && comparisonData.false_positive}</p>
+                  </div>
+                  {/* Display True Negative and False Negative */}
+                  <div className="col-md-6">
+                    <p>False Negative: {trueNegative}</p>
+                    <p>True Negative: {comparisonData && comparisonData.false_negative}</p>
+                  </div>
                 </div>
               </div>
+              <hr />
             </div>
-            <hr />
-          </div>
           )}
 
           {/* Filter Options */}
@@ -164,18 +165,22 @@ export default function ComparisonPage() {
             <div className="border p-3" style={{ minHeight: '210px' }}>
               <h4>Filter Options</h4>
               {/* Display filter options checkboxes */}
-              {["Production/Stable", "Alpha", "Pre-Alpha", "Beta"].map(option => (
-                <div key={option} className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    value={option}
-                    checked={selectedOptions[option]}
-                    onChange={() => handleOptionSelect(option)}
-                  />
-                  <label className="form-check-label">{option}</label>
-                </div>
-              ))}
+              {["5 - Production/Stable", "3 - Alpha", "2 - Pre-Alpha", "4 - Beta"].map(option => {
+                // Extracting the display name without the integer
+                const displayName = option.split(" - ")[1];
+                return (
+                  <div key={option} className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      value={option}
+                      checked={selectedOptions[option]}
+                      onChange={() => handleOptionSelect(option)}
+                    />
+                    <label className="form-check-label">{displayName}</label>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -189,51 +194,51 @@ export default function ComparisonPage() {
                 <p className="text-center">{errorMessage}</p>
               ) : (
                 <>
-                {!errorMessage && comparisonData && comparisonData.result && comparisonData.result.length > 0 && ( // Check if PypiReCom result exists and not empty
-                  <div className="row">
-                    {/* Display Pip Result */}
-                    <div className="col-md-6">
-                      <h4>Pip Result</h4>
-                      {comparisonData && comparisonData.Pip && comparisonData.Pip.result && comparisonData.Pip.result.map((packageName, index) => (
-                        <p key={index}>{packageName}</p>
-                      ))}
-                      <hr />
-                    </div>
-                    {/* Display PypiReCom Result */}
-                    <div className="col-md-6">
-                      <h4>PypiReCom Result</h4>
-                      <div className="table-responsive">
-                        <table className="table">
-                          <thead>
-                            <tr>
-                              <th>Package Name</th>
-                              <th>Total Dependencies</th>
-                              <th>Development Status</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {comparisonData && comparisonData.result && comparisonData.result.map((pkg, index) => (
-                              <tr key={index}>
-                                <td>{pkg.v_id}</td>
-                                <td>{comparisonData.Package_Dependency.filter(dep => dep.package === pkg.v_id).length}</td>
-                                <td>{pkg.attributes.dev_status}</td>
+                  {!errorMessage && comparisonData && comparisonData.result && comparisonData.result.length > 0 && ( // Check if PypiReCom result exists and not empty
+                    <div className="row">
+                      {/* Display Pip Result */}
+                      <div className="col-md-6">
+                        <h4>Pip Result</h4>
+                        {comparisonData && comparisonData.Pip && comparisonData.Pip.result && comparisonData.Pip.result.map((packageName, index) => (
+                          <p key={index}>{packageName}</p>
+                        ))}
+                        <hr />
+                      </div>
+                      {/* Display PypiReCom Result */}
+                      <div className="col-md-6">
+                        <h4>PypiReCom Result</h4>
+                        <div className="table-responsive">
+                          <table className="table">
+                            <thead>
+                              <tr>
+                                <th>Package Name</th>
+                                <th>Total Dependencies</th>
+                                <th>Development Status</th>
                               </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                            </thead>
+                            <tbody>
+                              {comparisonData && comparisonData.result && comparisonData.result.map((pkg, index) => (
+                                <tr key={index}>
+                                  <td>{pkg.v_id}</td>
+                                  <td>{comparisonData.Package_Dependency.filter(dep => dep.package === pkg.v_id).length}</td>
+                                  <td>{pkg.attributes.dev_status}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                   )}
+                  )}
                 </>
               ))}
           </div>
         </div>
       </div>
       <h4 className="text-center mt-5 mb-4">Contributing Libraries</h4>
-      <InfiniteLogo/>
+      <InfiniteLogo />
       <Footer />
     </div>
   );
-  
+
 }

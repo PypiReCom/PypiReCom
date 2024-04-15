@@ -84,7 +84,7 @@ export default function Home() {
 
   const downloadGraphFile = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/get_graph_file?Search_Text=${searchText}`);
+      const response = await fetch(`${BASE_URL}/get_json_file?Search_Text=${searchText}`);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(new Blob([blob]));
       const link = document.createElement('a');
