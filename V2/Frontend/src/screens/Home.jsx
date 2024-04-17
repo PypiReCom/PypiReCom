@@ -3,9 +3,10 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import logo from '../Assets/logo.png';
 import InfiniteLogo from "../components/InfiniteLogo";
-import { useLocation } from 'react-router-dom';
 import GraphComponent from "../components/Graph";
 import { BASE_URL } from "../api-endpoint";
+import SearchBar from "../components/Searchbar";
+import { useLocation } from 'react-router-dom';
 
 export default function Home() {
   const [searchText, setSearchText] = useState('');
@@ -17,17 +18,23 @@ export default function Home() {
   const [errorMessage, setErrorMessage] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [searched, setSearched] = useState(false);
-  const location = useLocation(); 
+  const location = useLocation();
+
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const searchTextParam = searchParams.get('searchText');
-    if (searchTextParam) {
+    if (searchTextParam && searchTextParam !== searchText) {
       setSearchText(searchTextParam);
-      // fetchData();
     }
-  }, [location.search]); 
+  }, [location.search, searchText]);
 
-  const fetchData = async () => {
+  useEffect(() => {
+    if (searchText) {
+      fetchData(searchText);
+    }
+  }, [searchText]);
+
+  const fetchData = async (searchText) => {
     setIsLoading(true);
     try {
       const response = await fetch(`${BASE_URL}/search?Search_Text=${searchText}`);
@@ -39,7 +46,7 @@ export default function Home() {
       } else {
         setResults(data.result);
         setGraph(data);
-        setFilteredResults(data.result); // Initialize filteredResults with all results
+        setFilteredResults(data.result);
         setErrorMessage('');
       }
       
@@ -50,35 +57,34 @@ export default function Home() {
     } finally {
       setIsLoading(false);
       setTableRendered(true);
-      setSearched(true); // Set searched to true when fetching data completes
+      setSearched(true);
     }
   };
 
-  const handleSearch = () => {
+  const handleSearch = (searchText) => {
+    setSearchText(searchText);
     if (searchText) {
-      fetchData();
+      fetchData(searchText);
     }
   };
 
   const handleStatusFilter = (status) => {
     setSelectedStatus(status);
-    filterResultsByStatus(status); // Trigger filtering process
+    filterResultsByStatus(status);
   };
 
   const filterResultsByStatus = (status) => {
     if (status === '') {
-      setFilteredResults(results); // If no filter selected, show all results
+      setFilteredResults(results);
     } else {
       const filtered = results.filter(item => item.attributes.dev_status === status);
       setFilteredResults(filtered);
     }
   };
 
-  // Function to handle downloading graph file
   const downloadGraphFile = async () => {
     try {
       const response = await fetch(`${BASE_URL}/get_json_file?Search_Text=${searchText}`);
-      console.log("test",response);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(new Blob([blob]));
       const link = document.createElement('a');
@@ -92,7 +98,6 @@ export default function Home() {
     }
   };
 
-  // Function to handle downloading GML file
   const downloadGmlFile = async () => {
     try {
       const response = await fetch(`${BASE_URL}/get_gml_file?Search_Text=${searchText}`);
@@ -116,7 +121,7 @@ export default function Home() {
     setTableRendered(false);
     setSearched(false);
     setSelectedStatus('');
-    window.location.href = '/'; // Redirect to the home page
+    window.location.href = '/';
   };
 
   return (
@@ -133,19 +138,7 @@ export default function Home() {
         
         <div className="row justify-content-center mt-4">
           <div className="col-md-6">
-            <div className="input-group">
-              <input 
-                type="text" 
-                className="form-control" 
-                placeholder="Search for a Python package..." 
-                aria-label="Search for a Python package" 
-                aria-describedby="basic-addon2"
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-              />
-              <button className="btn btn-outline-secondary" type="button" onClick={handleSearch}>Search</button>
-              <button className="btn btn-outline-secondary" type="button" onClick={clearSearch}>Clear</button>           
-            </div>
+            <SearchBar handleSearch={handleSearch} clearSearch={clearSearch} />
           </div>
           <div className="col-md-3">
             <div className="input-group">
@@ -161,7 +154,7 @@ export default function Home() {
           </div>
         </div>
 
-        {searched &&  errorMessage !== "Please check back again" && errorMessage !== "Check back after few minutes result is being prepared." && ( // Render buttons only if user has searched something
+        {searched &&  errorMessage !== "Please check back again" && errorMessage !== "Check back after few minutes result is being prepared." && (
           <div className="row justify-content-center mt-4">
             <div className="col-md-3">
               <button className="btn btn-primary w-100 mb-2 mb-md-0" onClick={downloadGraphFile}>Download Graph File</button>
@@ -171,9 +164,9 @@ export default function Home() {
             </div>
           </div>
         )}
-       {searched && errorMessage !== "Please check back again" && errorMessage !== "Check back after few minutes result is being prepared." && (
-  <GraphComponent data={GraphData} />
-)}
+        {searched && errorMessage !== "Please check back again" && errorMessage !== "Check back after few minutes result is being prepared." && (
+          <GraphComponent data={GraphData} />
+        )}
         {tableRendered && (
           <div className="row justify-content-center mt-4">
             <div className="col-md-10">
@@ -216,12 +209,9 @@ export default function Home() {
         )}
       </div>
       
-      
       <h4 className="text-center mt-5 mb-4">Contributing Libraries</h4>
       <InfiniteLogo/>
       
-      {/* {data.result && Object.keys(data.result).length >0 && < GraphComponent data={data.result} />} */}
-
       <Footer />
     </div>
   );

@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import Graph from "graphology";
 import Sigma from "sigma";

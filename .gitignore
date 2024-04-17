@@ -54,3 +54,20 @@ Demo101/__pycache__/backend_config.cpython-39.pyc
 Demo101/__pycache__/functions.cpython-39.pyc
 Demo101/__pycache__/main.cpython-39.pyc
 Demo101/*
+
+
+# React specific
+V2/Frontend/node_modules
+V2/Frontend/.pnp
+V2/Frontend/.pnp.js
+V2/Frontend/coverage
+V2/Frontend/build
+V2/Frontend/.DS_Store
+V2/Frontend/.env.local
+V2/Frontend/.env.development.local
+V2/Frontend/.env.test.local
+V2/Frontend/.env.production.local
+V2/Frontend/npm-debug.log*
+V2/Frontend/yarn-debug.log*
+V2/Frontend/yarn-error.log*
+V2/Graph_Config.yml

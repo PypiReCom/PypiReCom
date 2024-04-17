@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import Footer from "../components/Footer.jsx";
-import Navbar from "../components/Navbar.jsx";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 import logo from '../Assets/logo.png';
 import { useNavigate } from 'react-router-dom';
-import { BASE_URL } from '../api-endpoint.js';
+import { BASE_URL } from "../api-endpoint";
 
-export default function ExplorePackage() {
+export default function About() {
   const [searchContextList, setSearchContextList] = useState([]);
   const [dateUpdated, setDateUpdated] = useState([]);
   const [totalPackages, setTotalPackages] = useState([]);
@@ -34,6 +34,10 @@ export default function ExplorePackage() {
     navigate(`/?searchText=${context}`);
   };
 
+  const handleComparison = (context) => {
+    navigate(`/comparison_Matrix?searchText=${context}`); // Redirect to comparison matrix page
+  };
+
   return (
     <div>
       <Navbar />
@@ -52,10 +56,10 @@ export default function ExplorePackage() {
             <table className="table table-bordered table-hover">
               <thead className="thead-dark">
                 <tr>
-                  <th style={{ width: '40%' }}>Search Context</th>
+                  <th style={{ width: '40%' }}>Search Context</th> {/* Updated column header */}
                   <th style={{ width: '20%' }}>Date Updated</th>
                   <th style={{ width: '20%' }}>Total Packages</th>
-                  <th style={{ width: '20%' }}>Search</th>
+                  <th style={{ width: '20%' }}>Actions</th> {/* New column header */}
                 </tr>
               </thead>
               <tbody>
@@ -64,13 +68,21 @@ export default function ExplorePackage() {
                     <td>{context}</td>
                     <td>{dateUpdated[index]}</td>
                     <td>{totalPackages[index]}</td>
-                    <td>
-                      <button 
-                        className="btn btn-primary btn-sm"
-                        onClick={() => handleSearch(context)}
-                      >
-                        Search
-                      </button>
+                    <td> {/* Actions column */}
+                      <div className="d-flex justify-content-between">
+                        <button 
+                          className="btn btn-primary btn-sm mr-2"
+                          onClick={() => handleSearch(context)}
+                        >
+                          Search
+                        </button>
+                        <button 
+                          className="btn btn-success btn-sm"
+                          onClick={() => handleComparison(context)}
+                        >
+                          Compare
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -84,4 +96,3 @@ export default function ExplorePackage() {
     </div>
   );
 }
-
