@@ -50,6 +50,12 @@ const SearchBar = ({ handleSearch, clearSearch }) => {
     window.history.pushState({ path: newUrl }, '', newUrl);
   };
 
+  const handleSearchButtonClick = () => {
+    setShowDropdown(false); // Close the dropdown when search button is clicked
+    handleSearch(searchText);
+  };
+
+
   return (
     <div className="input-group position-relative">
       <input
@@ -90,7 +96,8 @@ const SearchBar = ({ handleSearch, clearSearch }) => {
         <button
           className="btn btn-outline-secondary"
           type="button"
-          onClick={() => handleSearch(searchText)} // Pass the current searchText to handleSearch
+           //onClick={() => handleSearch(searchText)} // Pass the current searchText to handleSearch
+          onClick={handleSearchButtonClick}
           style={{ borderRadius: "0" }}
         >
           Search
