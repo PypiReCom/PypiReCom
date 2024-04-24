@@ -34,7 +34,7 @@ export default function ComparisonPage() {
   const fetchComparisonData = async (searchText) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${BASE_URL}/search?Search_Text=${searchText}`);
+      const response = await fetch(`${BASE_URL}/compare?Search_Text=${searchText}`);
       const data = await response.json();
       if (data === "Please check back again" || data === "Check back after few minutes result is being prepared.") {
         setErrorMessage(data);
@@ -42,9 +42,9 @@ export default function ComparisonPage() {
         setTruePositive('');
         setTrueNegative('');
       } else {
-        setComparisonData(data);
+        setComparisonData(data.PypiReCom);
         setErrorMessage('');
-        updateConfusionMatrix(data); // Update confusion matrix based on fetched data
+        updateConfusionMatrix(data.PypiReCom); // Update confusion matrix based on fetched data
         fetchPipResult(searchText);
 
       }
@@ -69,6 +69,7 @@ export default function ComparisonPage() {
           relevantPackagesCount++;
         }
       });
+      // console.log("data result",data.result.result);
       setTruePositive(relevantPackagesCount);
       setTrueNegative(data.result.length - relevantPackagesCount);
     } else {
@@ -98,10 +99,10 @@ export default function ComparisonPage() {
 
   const fetchPipResult = async (searchText) => {
     try {
-      const response = await fetch(`${BASE_URL}/get_json_file?Search_Text=${searchText}`);
+      const response = await fetch(`${BASE_URL}/compare?Search_Text=${searchText}`);
       const data = await response.json();
-      if (data && data.result) {
-        const packageNames = data.result.map(pkg => pkg.v_id);
+      if (data && data.Pypi_Packages) {
+        const packageNames = data.Pypi_Packages.map(pkg => pkg);
         setComparisonData(prevData => ({
           ...prevData,
           Pip: { result: packageNames }
