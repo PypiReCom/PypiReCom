@@ -71,14 +71,16 @@ def compare_packages(Search_Text: str, background_task:BackgroundTasks):
     # Generating search context
     Search_Text = Search_Text.lower()
     Search_Context = generate_context(Search_Text)
-    
+    credentials = yaml.load(open('Graph_Config.yml'),Loader=SafeLoader)
     try:
         with open(parent_dir+"index.csv","r") as file:
             for context in file.read().split():
                 if '_'.join(Search_Context.split()) in context.split(','):
                     print("We already have the data.")
-                    return {'Pypi_Packages': get_pypi_packages(Search_Context),'result':graph(Search_Context)['result']}
+                    
+                    return {'Pypi_Packages': get_pypi_packages(Search_Context),'result':graph(Search_Context)}
     except:
-        credentials = yaml.load(open('Graph_Config.yml'),Loader=SafeLoader)
-        background_task.add_task(fetch_and_update_graph,Search_Context,credentials)
-        return "Check back after few minutes result is being prepared."
+        return "Please check back again"
+        
+    background_task.add_task(fetch_and_update_graph,Search_Context,credentials)
+    return "Check back after few minutes result is being prepared."
