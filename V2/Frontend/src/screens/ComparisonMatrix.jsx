@@ -42,9 +42,9 @@ export default function ComparisonPage() {
         setTruePositive('');
         setTrueNegative('');
       } else {
-        setComparisonData(data.result);
+        setComparisonData(data.PypiReCom);
         setErrorMessage('');
-        updateConfusionMatrix(data.result); // Update confusion matrix based on fetched data
+        updateConfusionMatrix(data.PypiReCom); // Update confusion matrix based on fetched data
         fetchPipResult(searchText);
 
       }
