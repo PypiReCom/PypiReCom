@@ -1,8 +1,9 @@
 name,author,author_email,license,development_status,source
+pandas,test,test@gmail.com,testlicense,5 - Production/Stable,Pypi
 priceloop-api-dev1,Priceloop,hello@priceloop.ai,,,Pypi
 dev-star,Terry Zheng,contact@terrytm.com,Apache 2.0,5 - Production/Stable,Pypi
 ledger-rest-api-dev,"Evernym, Inc.",dev@evernym.us,Apache 2.0,,Pypi
-dev-cli,Rémy Sanchez,remy.sanchez@hyperthese.net,WTFPL,3 - Alpha,Pypi
+dev-cli,RÃ©my Sanchez,remy.sanchez@hyperthese.net,WTFPL,3 - Alpha,Pypi
 sheetfu-dev,Philippe Oger,phil.oger@gmail.com,MIT,3 - Alpha,Pypi
 am4894dev,Andrew Maguire,andrewm4894@gmail.com,MIT license,2 - Pre-Alpha,Pypi
 tebalo-dev,,,,,Pypi
