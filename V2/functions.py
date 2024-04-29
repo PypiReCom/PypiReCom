@@ -93,7 +93,7 @@ def create_directory(Search_Context):
     try:
         with open(base_directory+"/Package_Basic_Data.csv","a", newline='') as file:
             csv_file = csv.writer(file)
-            csv_file.writerow(['name','author','author_email','license','development_status','source'])
+            csv_file.writerow(['name','author','author_email','license','development_status'])
         with open(base_directory+"/Package_Dependency.csv","a", newline='') as file:
             csv_file = csv.writer(file)
             csv_file.writerow(['name','dependency_pkg'])
@@ -109,7 +109,7 @@ def create_directory(Search_Context):
 
 
 
-def save_data(Search_Context,data,pypi_packages):
+def save_data(Search_Context,data):
     '''
     Input: Space seperaetd keywords to be searched -> Search_Context (In address or any operation _ is used to join the Search_Context), 
            List of data containing package name,author,email,license,development status,programming language and dependency -> data
@@ -121,12 +121,9 @@ def save_data(Search_Context,data,pypi_packages):
     try:
         # Saving data to files
         name,author,author_email,license,development_status,programming_lang,package_dependency = data
-        source = ''
-        if name in pypi_packages:
-            source += 'Pypi'
         with open(base_directory+"/Package_Basic_Data.csv","a", newline='') as file:
             csv_file = csv.writer(file)
-            csv_file.writerow([name,author,author_email,license,development_status,source])
+            csv_file.writerow([name,author,author_email,license,development_status])
         with open(base_directory+"/Package_Dependency.csv","a", newline='') as file:
             csv_file = csv.writer(file)
             for dependency_pkg in package_dependency:
@@ -228,8 +225,7 @@ def generate_graph_wTG(Search_Context,credentials):
         for index in df.index:
             package_vertex.append((df["name"][index], {"author" : df["author"][index],
                                                                 "author_email" : df["author_email"][index],
-                                                                "dev_status" : df["development_status"][index],
-                                                                "source" : df["source"][index]}))
+                                                                "dev_status" : df["development_status"][index]}))
             edge_1.append((df["name"][index],df["development_status"][index],{}))
             edge_2.append((df["name"][index],df["license"][index],{}))
 
@@ -295,7 +291,6 @@ def generate_graph_wNX(Search_Context):
             nx.set_node_attributes(G,{df["name"][index] : {"author" : df["author"][index],
                                                                 "author_email" : df["author_email"][index],
                                                                 "dev_status" : df["development_status"][index],
-                                                                "source" : df["source"][index],
                                                                 "vertex_type" : "Package"},
                                         df["development_status"][index] : {"vertex_type" : "Development Status"},
                                         df["license"][index] : {"vertex_type" : "License"}})
@@ -378,8 +373,7 @@ def gml_to_json(Search_Context):
                 package_data['v_type'] = node['vertex_type']
                 package_data['attributes'] = {"author" : node['author'],
                                             "author_email" : node['author_email'],
-                                            "dev_status" : node['dev_status'],
-                                            "source" : node['source']}
+                                            "dev_status" : node['dev_status']}
                 results.append(package_data)
         # print(json.loads(H)['links'])
         package_dependency = []
@@ -420,11 +414,8 @@ def fetch_and_update_graph(Search_Context,credentials):
     # check for status
     if create_directory(Search_Context)['Status Code'] == 200:
         # 2. Data scrapping required for getting list of packages
-        pypi_packages = []
-        # Taking 100 Packages from the first 5 pages
-        for page in range(1, search_page_range + 1):
-            pypi_packages += get_packages(pypi_search_url + '?q=' + '+'.join(Search_Context.split()) + '&page=' + str(page))
-        packages = [*set(pypi_packages)]
+        # packages = [*set(get_pypi_packages())]
+        packages = get_pypi_packages(Search_Context)
         package_count = 0
 
         # 3. Getting data of each package in the package list
@@ -432,10 +423,10 @@ def fetch_and_update_graph(Search_Context,credentials):
             # Package data in Json format
             try:
                 response = (requests.get(pypi_package_data_url + package + '/json')).json()
-                # Picking nesseary data form Json file
+                # Picking necessary data form Json file
                 data = fetch_data(response)
                 # Saving data in library
-                save_data(Search_Context,data,pypi_packages)
+                save_data(Search_Context,data)
                 package_count = package_count + 1
             except Exception as e:
                 logging.error(f'Response object - Exception: {e}')
@@ -457,6 +448,15 @@ def fetch_and_update_graph(Search_Context,credentials):
             return {"Status Code" : Status_Code["Fail"] , "Description" : "Credential error - incorrect graph_db"}
 
     print("Time taken: ",time()-init)
+
+
+
+def get_pypi_packages(Search_Context):
+    pypi_packages = []
+    # Taking 100 Packages from the first 5 pages
+    for page in range(1, search_page_range + 1):
+        pypi_packages += get_packages(pypi_search_url + '?q=' + '+'.join(Search_Context.split()) + '&page=' + str(page))
+    return pypi_packages
 
 
 
