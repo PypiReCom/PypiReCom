@@ -59,8 +59,12 @@ This is how we came to the idea of making life easy for developers.
 ***This is where our project helps.***
 
 ## 5. Architecture
+Layer 0 Architecture Overview
 ![Architecture](https://drive.google.com/uc?export=view&id=10mpWBhjk47EDIDcwkbh7qCrxL7SihnLy)
-
+Layer 1 Architecture: Local Deployment Workflow
+![Architecture](https://drive.google.com/uc?export=view&id=1gJV0RVh-wzQmve3RPdROk23dRg_oOSi7)
+Layer 2 Architecture: Component and Workflow Integration
+![Architecture](https://drive.google.com/uc?export=view&id=178nQd6xvhzgXstDtYsgCyBlSwJpXeUM3)
 
 ## 6. What have we done till now?
 
