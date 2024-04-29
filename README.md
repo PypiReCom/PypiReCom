@@ -59,7 +59,7 @@ This is how we came to the idea of making life easy for developers.
 ***This is where our project helps.***
 
 ## 5. Architecture
-![Architecture](https://drive.google.com/file/d/10mpWBhjk47EDIDcwkbh7qCrxL7SihnLy/view?usp=sharing)
+![Architecture](https://drive.google.com/uc?export=view&id=10mpWBhjk47EDIDcwkbh7qCrxL7SihnLy)
 
 
 ## 6. What have we done till now?
