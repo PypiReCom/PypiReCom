@@ -4,6 +4,8 @@ from functions import *
 import yaml
 from yaml.loader import SafeLoader
 from fastapi.middleware.cors import CORSMiddleware
+from togetherai_rag import load_gml_and_query_graph
+
 
 app = FastAPI()
 
@@ -23,11 +25,13 @@ def get_graph_file(Search_Text:str):
     Search_Context = '_'.join(generate_context(Search_Text).split())
     return FileResponse(path='library/'+Search_Context+'/graph.json',filename=Search_Context+'_Graph.json')
 
+
 @app.get('/get_gml_file')
 def get_gml_file(Search_Text:str):
     Search_Text = Search_Text.lower()
     Search_Context = '_'.join(generate_context(Search_Text).split())
     return FileResponse(path='library/'+Search_Context+'/graph.gml',filename=Search_Context+'_Graph.gml')
+
 
 @app.get('/get_seach_context_list')
 def fetch_search_context():     # Return the list of all the Search Context available in ../library/index.csv
@@ -43,6 +47,7 @@ def fetch_search_context():     # Return the list of all the Search Context avai
         return {'Search Context':search_context_list,'Date Updated':date_updated_list,'Total Packages':no_of_pkg_list}
     except:
         return "Error in fetching data."
+
 
 @app.get('/search')
 def search_pypi(Search_Text: str, background_task:BackgroundTasks):
@@ -67,6 +72,7 @@ def search_pypi(Search_Text: str, background_task:BackgroundTasks):
     
     return "Check back after few minutes result is being prepared."
 
+
 @app.get('/compare')
 def compare_packages(Search_Text: str, background_task:BackgroundTasks):
     # Generating search context
@@ -85,3 +91,8 @@ def compare_packages(Search_Text: str, background_task:BackgroundTasks):
         
     background_task.add_task(fetch_and_update_graph,Search_Context,graph_credentials)
     return "Check back after few minutes result is being prepared."
+
+
+@app.post('/chat')
+def chat_graph(Search_Text: str, Gml_Name: str, background_task:BackgroundTasks):
+    return load_gml_and_query_graph(Search_Text, Gml_Name)

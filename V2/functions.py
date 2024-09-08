@@ -334,11 +334,11 @@ def json_to_gml(Search_Context):
         with open(parent_dir+'_'.join(Search_Context.split())+"/graph.json","r") as graphfile:
             result = json.load(graphfile)
             for package_dependency in result['Package_Dependency']:
-                G.add_edge(package_dependency['package'],package_dependency['dependency'],label='has_dependency')
+                G.add_edge(package_dependency['package'],package_dependency['dependency'],relation='has_dependency')
             for license in result['license']:
-                G.add_edge(license['package'],license['license'],label='has_license')
+                G.add_edge(license['package'],license['license'],relation='has_license')
             for package_language in result['Package_Language']:
-                G.add_edge(package_language['package'],package_language['programming_language'],label='used_language')
+                G.add_edge(package_language['package'],package_language['programming_language'],relation='used_language')
         nx.write_gml(G, path = parent_dir + '_'.join(Search_Context.split()) + '/graph.gml')
         return {"Status Code" : Status_Code["Success"] , "Description" : "GML generated"}
     except Exception as e:
