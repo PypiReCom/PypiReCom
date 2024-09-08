@@ -10,9 +10,9 @@ chat_model = ChatTogether(
     temperature=0.2,
 )
 
-def load_gml_and_query_graph(question, gml_file_path):
+def load_gml_and_query_graph(question, gml_name):
     # Define the GML file path and load the graph
-    # gml_file_path = "./graph.gml"
+    gml_file_path = f"./library/{gml_name}/graph.gml"
     graph = NetworkxEntityGraph.from_gml(gml_file_path)
     context= triples = graph.get_triples()
     # print(context)
