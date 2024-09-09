@@ -10,3 +10,4 @@ fastapi
 uvicorn
 langchain
 langchain-together
+langchain-community
