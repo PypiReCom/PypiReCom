@@ -8,3 +8,5 @@ pyTigerGraph
 datetime
 fastapi
 uvicorn
+langchain
+langchain-together

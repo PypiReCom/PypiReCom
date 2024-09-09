@@ -7,6 +7,7 @@ import GraphComponent from "../components/Graph";
 import { BASE_URL } from "../api-endpoint";
 import SearchBar from "../components/Searchbar";
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
   const [searchText, setSearchText] = useState('');
@@ -19,6 +20,7 @@ export default function Home() {
   const [selectedStatus, setSelectedStatus] = useState('');
   const [searched, setSearched] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -114,6 +116,12 @@ export default function Home() {
     }
   };
 
+  const chat = () => {
+    if (searchText) {
+      navigate(`/chat/${searchText}`);
+    }
+  };
+
   const clearSearch = () => {
     setSearchText('');
     setResults([]);
@@ -156,6 +164,9 @@ export default function Home() {
 
         {searched &&  errorMessage !== "Please check back again" && errorMessage !== "Check back after few minutes result is being prepared." && (
           <div className="row justify-content-center mt-4">
+            <div className="col-md-3">
+              <button className="btn btn-primary w-100 mb-2 mb-md-0" onClick={chat}>Chat with Graph</button>
+            </div>
             <div className="col-md-3">
               <button className="btn btn-primary w-100 mb-2 mb-md-0" onClick={downloadGraphFile}>Download Graph File</button>
             </div>
