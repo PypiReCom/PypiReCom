@@ -122,7 +122,7 @@ Before you start working on an issue:
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/your-username/PypiReCom.git
+   git clone https://github.com/PypiReCom/PypiReCom.git
    ```
 
 2. **Navigate to the Project Directory:**
