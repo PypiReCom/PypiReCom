@@ -41,7 +41,7 @@ Each issue will specify the branch where changes should be made, indicated like 
 
 ## Issues and Labels
 
-We maintain a list of issues categorized with appropriate labels to help you find tasks that suit your interests and skills. Issues include:
+We maintain a list of [issues](https://github.com/PypiReCom/PypiReCom/issues) categorized with appropriate labels to help you find tasks that suit your interests and skills. Issues include:
 
 - **Branch to Work On:** Indicated in the issue title or description.
 - **Task Description:** A brief overview of what needs to be done.
