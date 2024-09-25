@@ -16,7 +16,7 @@ Thank you for your interest in contributing to **PypiReCom**! We appreciate your
 - [Coding Standards](#coding-standards)
 - [Setting Up the Development Environment](#setting-up-the-development-environment)
 - [Submitting Your Own Issues](#submitting-your-own-issues)
-- [Communication Channels](#communication-channels)
+- [Moderators](#Moderators)
 - [License Agreement](#license-agreement)
 - [Additional Notes](#additional-notes)
 
@@ -166,16 +166,8 @@ If you find a bug or have a feature request:
 4. **Label Appropriately:**
    - Add relevant labels (e.g., `bug`, `enhancement`).
 
-## Communication Channels
+## Moderators
 
-- **GitHub Discussions:**
-  - Participate in [GitHub Discussions](https://github.com/your-username/PypiReCom/discussions) for general topics.
-- **Email:**
-  - Contact maintainers at [maintainer-email@example.com](mailto:maintainer-email@example.com).
-- **Chat:**
-  - Join our [Slack Workspace](#) or [Discord Server](#) if available.
-
-*Note:* Please check the repository for any available communication channels.
 
 ## License Agreement
 
