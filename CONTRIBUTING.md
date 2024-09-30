@@ -37,7 +37,7 @@ We have multiple active branches to organize development efforts, but as a contr
 - **`Dev_V2`**
 - **`Dev_V3`**
 
-Each issue will specify the branch where changes should be made, indicated like `<ISSUE> #Dev_V2`. Please ensure you're working on the correct branch as specified in the issue.
+Each issue will specify the branch where changes should be made, indicated like ` #Dev_V2 : <ISSUE>`. Please ensure you're working on the correct branch as specified in the issue.
 
 ## Issues and Labels
 
