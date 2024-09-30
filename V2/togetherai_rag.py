@@ -5,7 +5,7 @@ from langchain.prompts import PromptTemplate
 
 # Initialize your LLM model
 chat_model = ChatTogether(
-    together_api_key="019d5b390bf9b379deefbc22ed4cb09750a79f34f667e5b491828bd12959db2e",
+    together_api_key="<your-api-key>",                 #visit https://api.together.ai/settings/api-keys to create yours
     model="meta-llama/Llama-3-70b-chat-hf",
     temperature=0.2,
 )
