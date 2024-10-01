@@ -167,7 +167,11 @@ If you find a bug or have a feature request:
    - Add relevant labels (e.g., `bug`, `enhancement`).
 
 ## Moderators
-
+[Dr. Shyam Sundaram](https://github.com/drshyamsundaram)
+[Animesh Verma](https://github.com/Develop-Things)
+[Prateek Balaji](https://github.com/prateek-balaji)
+[Kartikey Bhatnagar](https://github.com/kartikey-codes)
+[Avi Gupta](https://github.com/IVAVI17)
 
 ## License Agreement
 
