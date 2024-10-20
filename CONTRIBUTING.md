@@ -1,6 +1,6 @@
 # Contributing to PypiReCom
 
-Thank you for your interest in contributing to **PypiReCom**! We appreciate your support and are excited to collaborate with you during Hacktoberfest and beyond. This guide will help you get started with contributing to the project.
+Thank you for your interest in contributing to **PypiReCom** ! We appreciate your support and are excited to collaborate with you during Hacktoberfest and beyond. This guide will help you get started with contributing to the project.
 
 ## Table of Contents
 
