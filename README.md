@@ -45,6 +45,22 @@ This can be used to suggest packages to user working on some project.
 
 This can be used in providing the Depedency of any Pip package.
 
+### Other domains include
+Software Development:
+Assist developers face the challenge of selecting the right packages for their projects.
+
+Open-Source Projects and GitHub repositories:
+Help developers find relevant open-source projects or repositories based on their contributions, skills, and interests.
+
+Artificial Intelligence & Machine Learning Models:
+Recommend pre-trained models or model architectures.
+
+Indian Healthcare:
+Recommend medicines or treatments based on symptoms and diagnoses across various fields such as Ayurvedic, Homeopathic, and Allopathic medicine.
+
+Indian Agriculture:
+Help farmers in selecting the best seeds, fertilizers, and crops based on their region, climate, and soil type.
+
 ## 4. How we got this Idea?
 If we look at the current searching that is availble on the pypi 
 website, we can see that the results are not perfect to our need.
