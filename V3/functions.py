@@ -12,30 +12,86 @@ import pyTigerGraph as tg
 from datetime import date
 from time import time
 import logging
+from playwright.async_api import async_playwright
+import asyncio
+import threading
+from queue import Queue, Empty
 from backend_config import *
-logging.basicConfig(filename='logs.txt', filemode='a', format='%(asctime)s %(levelname)s-%(message)s', datefmt='%d-%m-%y')
-
-
+import traceback
+import platform
 
 def get_packages(link):
     '''
-    Input: Link of the endpoint -> link
-    
-    This link is used to receive the HTML response and BeautifulSoup is used to scrape the data about names of packages from the response.
-
-    Return: List of package received from the HTML response
+    Scrapes Python packages from the PyPI search page using Playwright.
+    Blocks execution until scraping is complete.
     '''
-    packages = []
-    # Creating a BeautifulSoup
-    soup = BeautifulSoup(requests.get(link).content,'html.parser')
-    # Finding the specific class of object in which we have package name
-    html_data = soup.find_all('a',class_="package-snippet")
-    # Adding the name of packages to the list
-    for package in html_data:
-        packages.append(str(package).split('/')[2])
+    
+    def run_playwright_in_thread(link, queue):
+        async def fetch_packages():
+            async with async_playwright() as p:
+                print(f"Starting Playwright for link: {link}")
+                browser = await p.chromium.launch(headless=True)
+                context = await browser.new_context(
+                    user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36'
+                )
+                page = await context.new_page()
+                try:
+                    print(f"Navigating to: {link}")
+                    await page.goto(link)
+                    print("Page loaded, waiting for selector...")
+                    await page.wait_for_selector('a.package-snippet', timeout=30000)
+                    print("Selector found, extracting packages...")
+                    package_snippets = await page.query_selector_all('a.package-snippet')
+                    print(f"Number of package snippets found: {len(package_snippets)}")
+                    packages = []
+                    for snippet in package_snippets:
+                        name_element = await snippet.query_selector('span.package-snippet__name')
+                        if name_element:
+                            name = await name_element.inner_text()
+                            packages.append(name.strip())
+                    print(f"Packages retrieved from {link}: {packages}")
+                    queue.put(packages)
+                except Exception as e:
+                    print(f"Error scraping packages from {link}: {e}")
+                    traceback.print_exc()
+                    logging.error(f"Error scraping packages from {link}: {e}\n{traceback.format_exc()}")
+                    queue.put([])  # still put something to avoid empty queue
+                finally:
+                    await browser.close()
+
+        # Set Windows Proactor policy if applicable
+        if platform.system() == "Windows":
+            asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            loop.run_until_complete(fetch_packages())
+        except Exception as e:
+            print(f"Thread-level error for {link}: {e}")
+            traceback.print_exc()
+            logging.error(f"Thread-level error for {link}: {e}\n{traceback.format_exc()}")
+            queue.put([])  # ensure result is always put
+        finally:
+            loop.close()
+
+    # Setup
+    queue = Queue()
+    print("Starting thread for Playwright...")
+    thread = threading.Thread(target=run_playwright_in_thread, args=(link, queue))
+    thread.start()
+
+    thread.join()
+    print("Thread completed. Resuming main process...")
+
+    try:
+        packages = queue.get_nowait()
+        print(f"Packages retrieved from thread: {packages}")
+    except Empty:
+        print("Queue was empty after thread join. No packages retrieved.")
+        packages = []
+
     return packages
-
-
 
 def fetch_data(response):
     '''
@@ -457,7 +513,6 @@ def get_pypi_packages(Search_Context):
     for page in range(1, search_page_range + 1):
         pypi_packages += get_packages(pypi_search_url + '?q=' + '+'.join(Search_Context.split()) + '&page=' + str(page))
     return pypi_packages
-
 
 
 def graph(Search_Context):

@@ -2,7 +2,6 @@ bs4
 requests
 nltk
 pandas
-nltk
 networkx
 pyTigerGraph
 datetime
@@ -11,3 +10,4 @@ uvicorn
 langchain
 langchain-together
 langchain-community
+playwright

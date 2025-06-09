@@ -95,4 +95,8 @@ def compare_packages(Search_Text: str, background_task:BackgroundTasks):
 
 @app.post('/chat')
 def chat_graph(Search_Text: str, Gml_Name: str, background_task:BackgroundTasks):
+    if(Search_Text == "" or Gml_Name == ""):
+        return "Please provide both Search Text and GML Name."
+    
+    Gml_Name = '_'.join(Gml_Name.split())
     return load_gml_and_query_graph(Search_Text, Gml_Name)
