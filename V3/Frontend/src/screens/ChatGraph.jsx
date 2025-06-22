@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
@@ -6,30 +6,33 @@ import GraphComponent from "../components/Graph";
 import { BASE_URL } from "../api-endpoint";
 
 const ChatGraph = () => {
-  const { searchText } = useParams();  // Fetch searchText from URL parameters
+  const { searchText } = useParams();
   const [userMessage, setUserMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
-  const [graphData, setGraphData] = useState(null); // State to store fetched graph data
+  const [graphData, setGraphData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null); // State to handle errors
-  const [loading, setLoading] = useState(true); // State to handle loading
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  const inputRef = useRef(null);              // For auto-focus
+  const chatContainerRef = useRef(null);      // For auto scroll
 
+  // Fetch graph data
   const fetchData = async () => {
     try {
-      setLoading(true); // Start loading
+      setLoading(true);
       const response = await fetch(`${BASE_URL}/search?Search_Text=${searchText}`);
       const data = await response.json();
-      
+
       if (data && data.result) {
-        setGraphData(data); // Set the graph data if successful
+        setGraphData(data);
       } else {
         setError('No graph data found');
       }
     } catch (err) {
       setError('Error fetching graph data');
     } finally {
-      setLoading(false); // End loading
+      setLoading(false);
     }
   };
 
@@ -39,22 +42,25 @@ const ChatGraph = () => {
     }
   }, [searchText]);
 
+  // Scroll to latest message
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [chatMessages]);
 
+  // Auto focus on input
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
-
-  
-
-  // Function to handle sending a message
   const handleSendMessage = async () => {
-    if (userMessage.trim() === '') return;  // Avoid sending empty messages
+    if (userMessage.trim() === '') return;
 
-    // Add the user message to the chat
     setChatMessages([...chatMessages, { message: userMessage, isBot: false }]);
     setIsLoading(true);
 
-    // Fetch the response from the backend API
     try {
-      // Send the data as query parameters in the URL
       const response = await fetch(`${BASE_URL}/chat?Search_Text=${encodeURIComponent(userMessage)}&Gml_Name=${encodeURIComponent(searchText)}`, {
         method: 'POST',
         headers: {
@@ -64,11 +70,16 @@ const ChatGraph = () => {
 
       if (response.ok) {
         const data = await response.json();
-        
-        // If the response is an object, convert it to a string for display
-        const displayMessage = typeof data === 'object' ? JSON.stringify(data, null, 2) : data;
+        const displayMessager = data.result || (typeof data === 'object' ? JSON.stringify(data, null, 2) : data);
+        const displayMessage = displayMessager
+          .replace(/\* /g, '• ')
+          .replace(/1\. /, '\n1. ')
+          .replace(/So, the list/, '\nSo, the list')
+          .replace(/From the triples/, '\nFrom the triples')
+          .replace(/Specifically/, '\nSpecifically')
+          .replace(/The triples/, '\nThe triples')
+          .replace(/Based on/, '\nBased on');
 
-        // Add the bot's response to the chat
         setChatMessages(prevMessages => [...prevMessages, { message: displayMessage, isBot: true }]);
       } else {
         const errorData = await response.json();
@@ -78,8 +89,16 @@ const ChatGraph = () => {
       console.error("Error fetching chat response:", error);
       setChatMessages(prevMessages => [...prevMessages, { message: 'Error fetching response. Please try again.', isBot: true }]);
     } finally {
-      setUserMessage('');  // Clear input field
-      setIsLoading(false);  // Remove loading state
+      setUserMessage('');
+      setIsLoading(false);
+    }
+  };
+
+  // Handle Enter key to send message
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSendMessage();
     }
   };
 
@@ -87,22 +106,22 @@ const ChatGraph = () => {
     <div>
       <Navbar />
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
-        <h3 style={{ textAlign: 'center', marginBottom: '20px' }}>Chat with  {searchText} Graph</h3>
+        <h3 style={{ textAlign: 'center', marginBottom: '20px' }}>Chat with {searchText} Graph</h3>
 
-        {graphData && <GraphComponent data={graphData} />} {/* Render GraphComponent with fetched data */}
+        {graphData && <GraphComponent data={graphData} />}
 
-        {/* <p style={{ textAlign: 'center', color: '#666' }}>Search Text: {searchText}</p> */}
-
-        {/* Chatbox container */}
-        <div style={{
-          border: '1px solid #ddd',
-          borderRadius: '10px',
-          padding: '20px',
-          backgroundColor: '#f9f9f9',
-          maxHeight: '400px',
-          overflowY: 'auto',
-          marginBottom: '20px'
-        }}>
+        <div
+          ref={chatContainerRef}
+          style={{
+            border: '1px solid #ddd',
+            borderRadius: '10px',
+            padding: '20px',
+            backgroundColor: '#f9f9f9',
+            maxHeight: '400px',
+            overflowY: 'auto',
+            marginBottom: '20px'
+          }}
+        >
           {chatMessages.map((chat, index) => (
             <div key={index} style={{
               backgroundColor: chat.isBot ? '#e0e0e0' : '#007bff',
@@ -113,21 +132,45 @@ const ChatGraph = () => {
               marginBottom: '10px',
               maxWidth: '75%',
               alignSelf: chat.isBot ? 'flex-start' : 'flex-end',
-              marginLeft: chat.isBot ? '0' : 'auto'
+              marginLeft: chat.isBot ? '0' : 'auto',
+              wordWrap: 'break-word',
+              whiteSpace: 'normal',
+              lineHeight: '1.5',
+              fontSize: '15px',
             }}>
-              <pre>{chat.message}</pre>
+              <div style={{ whiteSpace: 'pre-wrap' }}>{chat.message}</div>
             </div>
           ))}
-                  
-          {isLoading && <p style={{ textAlign: 'center', color: '#666' }}>Loading...</p>}
+
+          {isLoading && (
+            <div style={{ textAlign: 'center' }}>
+              <div style={{
+                display: 'inline-block',
+                width: '30px',
+                height: '30px',
+                border: '4px solid rgba(0,0,0,0.2)',
+                borderTop: '4px solid #007bff',
+                borderRadius: '50%',
+                animation: 'spin 1s linear infinite'
+              }} />
+              <style>{`
+                @keyframes spin {
+                  0% { transform: rotate(0deg); }
+                  100% { transform: rotate(360deg); }
+                }
+              `}</style>
+            </div>
+          )}
         </div>
 
         {/* Chat input box */}
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <input
             type="text"
+            ref={inputRef}
             value={userMessage}
             onChange={(e) => setUserMessage(e.target.value)}
+            onKeyPress={handleKeyPress}
             placeholder="Type your message..."
             style={{
               width: '80%',
@@ -138,14 +181,15 @@ const ChatGraph = () => {
           />
           <button
             onClick={handleSendMessage}
+            disabled={isLoading}
             style={{
               marginLeft: '10px',
               padding: '10px 20px',
-              backgroundColor: '#007bff',
+              backgroundColor: isLoading ? '#aaa' : '#007bff',
               color: 'white',
               border: 'none',
               borderRadius: '5px',
-              cursor: 'pointer',
+              cursor: isLoading ? 'not-allowed' : 'pointer',
             }}
           >
             Send
